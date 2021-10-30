@@ -24,12 +24,12 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
-          editUrl: "https://github.com/G7M7T1/Notebook",
+          editUrl: "https://github.com/G7M7T1/Notebook/tree/main/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
-          editUrl: "https://github.com/G7M7T1/Notebook",
+          editUrl: "https://github.com/G7M7T1/Notebook/tree/main/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
