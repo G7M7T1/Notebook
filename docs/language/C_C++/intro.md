@@ -1,9 +1,11 @@
 ---
 sidebar_position: 1
-sidebar_label: '介绍文档'
+sidebar_label: 'C/C++'
 ---
 
-# 介绍文档
+# C/C++
 
- - Revenue was off the chart.
- - Profits were higher than ever.
+C语言是面向过程的语言， 而C++是面向对象的语言。\
+C语言和C++本身区别不是很大，语法大部分相似。\
+C语言和C++可以一起学习。\
+C语言和C++都是拥有能对内存直接读写的特性。\
