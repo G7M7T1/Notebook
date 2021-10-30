@@ -92,6 +92,7 @@ System.out.println (cls1==cls3);//比的是内存地址
 - 获取功能：
 
   1.获取成员变量们
+  ```java
 
   ​	 Field[ ] getFields( ) ：用来获取所有public修饰的成员变量
 
@@ -102,10 +103,11 @@ System.out.println (cls1==cls3);//比的是内存地址
   ​	 Field[ ] getDeclaredFields( )：不考虑访问权限修饰符，获取所有成员变量
 
   ​     Field getDeclaredField(String name )
-
+  ```
   
 
   2.获取构造方法们
+    ```java
 
   ​	 Constructor<?>[ ] getConstructors( ) 获取所有的成员变量，不考虑修饰符
 
@@ -116,8 +118,10 @@ System.out.println (cls1==cls3);//比的是内存地址
   ​	 Constructor<T> getDeclaredConstructor(类<?>... parameterTypes)
 
   ​     Constructor<?>[ ] getDeclaredConstuctor( ）
+    ```
 
   3.获取成员方法们
+    ```java
 
   ​	 Method[ ] getMethods( )
 
@@ -129,12 +133,13 @@ System.out.println (cls1==cls3);//比的是内存地址
 
   ​	 Method[ ] getDeclaredMethod(String name , 类<?>... parameterTypes)
 
-  ​	 
+  ​	 ```
 
   4.获取类名
+    ```java
 
   ​	 String getName( )
-
+    ```
 - Field：成员变量
   - 操作：
     - 1.设置值
