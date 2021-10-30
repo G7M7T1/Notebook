@@ -1,9 +1,5 @@
-
-
 ---
-
 sidebar_label: 'JavaSE' 
-
 ---
 
 # Topic
