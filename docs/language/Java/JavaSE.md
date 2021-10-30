@@ -4224,3 +4224,1934 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
+public class Demo{
+    public static void main(String[] args){
+
+			// method();
+        method1 ();
+    }
+    //运行时异常
+    public static void method(){
+        try {
+            int[] arr = {1 ,2 ,3};
+            System.out.println (arr[3]);
+        }catch (ArrayIndexOutOfBoundsException e){
+            e.printStackTrace ();
+        }
+    }//做不做try catch都一个样
+
+    //编译时异常
+    public static void method1(){
+        try {
+            String s = "2048-08-09";
+            SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd");
+            Date d = sdf.parse (s);
+            System.out.println (d);
+        }catch (ParseException e){
+            e.printStackTrace ();
+        }
+
+    }
+}
+```
+
+## 自定义异常
+
+格式
+
+```java
+public class 异常类名 extends Exception {
+	无参构造
+	带参构造
+}
+```
+
+例如
+
+```java
+public class ScoreException extends Exception {
+	public ScoreException() { }
+	public ScoreException(String message) {
+			super(message);
+	}
+}
+```
+
+## throws和throw的区别
+
+throws
+
+- throws用在方法声明的后面，跟的是异常类名
+- 表示抛出异常，由该方法的调用者来处理
+- 表示出现异常的一种可能性，并不一定会发生这种异常
+
+throw
+
+- 用在方法体内，跟的是异常对象名
+- 表示抛出异常，由方法体内的语句处理
+- 执行throw一定抛出了某种异常
+
+```java
+public class ScoreException extends Exception{
+
+    public ScoreException(){};
+
+    public ScoreException(String message){
+        super(message);
+    }
+}
+
+public class Teacher{
+
+    public void checkScore(int score) throws Exception{
+        if(score<0 || score>100){
+//            throw new ScoreException ();
+            throw new ScoreException ("你给的分数有误");
+        }  else{
+            System.out.println ("分数正常");
+        }
+    }
+}
+
+import java.util.Scanner;
+
+public class TeacherTest{
+    public static void main(String[] args)throws Exception{
+        Scanner sc = new Scanner (System.in);
+        System.out.println ("请输入分数");
+        int score = sc.nextInt ();
+
+        Teacher t = new Teacher ();
+
+        try {
+            t.checkScore (score);
+        } catch (ScoreException e){
+            e.printStackTrace ();
+        }
+    }
+}
+```
+
+# Collection集合
+
+## 集合体系结构
+
+集合类的特点：提供一种存储空间可变的存储模型，存储的数据容量可以随时发生改变。
+
+## Collection集合概述和使用
+
+Collection集合概述
+
+- 是单例集合的顶层接口，它表示一组对象，这些对象也成为Collection的元素
+- JDK不提供此接口的任何直接实现，它提供更具体的子接口（如Set和List）实现
+
+```java
+boolean add(E e) 添加元素
+boolean remove(Object o) 从集合中移除指定元素
+void clear() 清空集合中的元素
+boolean contains(Object o) 判断集合中是否存在指定元素
+boolean isEmpty() 判断集合是否为空
+int size() 集合的长度，也就是集合中元素的个数
+```
+
+```java
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class Demo{
+    public static void main(String[] args){
+        Collection<String> c = new ArrayList<String> ();
+//        boolean add(E e) 添加元素
+        System.out.println (c.add ("hello"));
+        System.out.println (c.add ("world"));
+        System.out.println (c.add ("world"));
+
+//        boolean remove(Object o) 从集合中移除指定元素
+        System.out.println (c.remove ("world"));//有重复的先移除靠前的。
+        System.out.println (c);
+
+//        void clear() 清空集合中的元素
+//        c.clear ();
+        System.out.println (c);
+
+//        boolean contains(Object o) 判断集合中是否存在指定元素
+        System.out.println (c.contains ("world"));
+
+//        boolean isEmpty() 判断集合是否为空
+        c.isEmpty ();
+
+        System.out.println (c.size ());
+    }
+}
+```
+
+## Collection 集合的遍历
+
+```java
+Iterator:迭代器，集合的专用遍历方式
+
+- Iterator<E> iterator() ：返回此集合中元素的容器，通过集合的iterator()方法得到
+- 迭代器是通过集合的iterator()方法得到的，所以我们说他是依赖于集合而存在的
+```
+
+
+
+Iterator中的常用方法
+
+- E next()：返回迭代器中的下一个元素
+- boolean hasNest()：如果迭代具有更多的元素，则返回true
+
+```java
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+public class Demo{
+    public static void main(String[] args){
+
+        //- E next()：返回迭代器中的下一个元素
+        //- boolean hasNest()：如果迭代具有更多的元素，则返回true
+
+        Collection<String> c = new ArrayList<String> ();
+        c.add ("hello");
+        c.add ("world");
+        c.add ("java");
+
+        //Iterator<E> iterator() ：返回此集合中元素的容器，通过集合的iterator()方法得到
+        Iterator<String> it = c.iterator ();
+//        System.out.println (it.next ());//hello
+//        System.out.println (it.next ());//world
+//        System.out.println (it.next ());//java
+////        System.out.println (it.next ());被请求的元素不存在
+
+        //- boolean hasNest()：如果迭代具有更多的元素，则返回true
+
+//        if(it.hasNext ()){
+//            System.out.println (it.next ());
+//        }
+//        if(it.hasNext ()){
+//            System.out.println (it.next ());
+//        }
+//        if(it.hasNext ()){
+//            System.out.println (it.next ());
+//        }
+//        if(it.hasNext ()){
+//            System.out.println (it.next ());
+//        }//不会报错，因为先做了hasNext()判断有没有元素，没有就返回false
+
+        //用while循环改进
+        while(it.hasNext ()){
+            String s = it.next ();
+            System.out.println (s);
+        }
+    }
+}
+```
+
+## List集合概述和特点
+
+- List称为有序集合（序列），用户可以精确的控制列表中每个元素的插入位置。用户可以通过整数索引访问元素，并搜索列表中的元素
+
+- 与Set集合不同，列表通常允许重复的元素
+
+- 特点
+
+  - 有序:存储和取出的顺序一致
+  - 可重复:存储的元素可以重复
+
+  ```java
+  import java.util.ArrayList;
+  import java.util.Iterator;
+  import java.util.List;
+  
+  public class Demo{
+      public static void main(String[] args){
+  
+          //创建对象
+          List<String> list = new ArrayList<String> ();
+          //添加元素
+          list.add ("HELLO");
+          list.add ("WORLD");
+          list.add ("Java");
+          list.add ("WORlD");
+  
+          System.out.println (list);
+  
+          //迭代器遍历
+          Iterator<String> it = list.iterator ();
+          while(it.hasNext ()){
+              String s = it.next ();
+              System.out.println (s);
+          }
+      }
+  }
+  ```
+
+## List集合特有方法
+
+```java
+void add(int index , E element) 在此集合的指定位置插入指定的元素
+E remove(int index) 删除指定索引处的元素，返回被删除的元素。
+E set（int index , E element) 修改指定索引处的元素，返回被修改的元素
+E get（int index) 返回指定索引处的元素
+```
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Demo{
+    public static void main(String[] args){
+
+        //创建对象
+        List<String> list = new ArrayList<String> ();
+        //添加元素
+        list.add ("HELLO");
+        list.add ("WORLD");
+        list.add ("Java");
+
+//        void add(int index , E element) 在此集合的指定位置插入指定的元素
+        list.add(1,"javaee");
+        //list.add(11,"javaee");报错
+
+//        E remove(int index) 删除指定索引处的元素，返回被删除的元素。
+        list.remove (1);
+//        E set（int index , E element) 修改指定索引处的元素，返回被修改的元素
+//        System.out.println (list.set (1,"java"));
+//        E get（int index) 返回指定索引处的元素
+        System.out.println (list.get (1));
+        System.out.println (list);
+
+        //遍历
+        for(int i=0;i< list.size ();i++){
+            String s = list.get (i);
+        }
+    }
+}
+```
+
+## 并发修改异常
+
+并发修改异常
+
+- ConcurrentModificationException
+
+产生原因
+
+- 迭代器遍历的过程中，通过集合对象修改了集合中元素的长度，造成了迭代器获取元素中判断预期修改值和实际修改值不一致
+- 解决方案
+- 用for循环遍历，用集合对象做对应的操作即可
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Demo{
+    public static void main(String[] args){
+
+        //创建对象
+        List<String> list = new ArrayList<String> ();
+
+        //添加元素
+        list.add ("hello");
+        list.add ("world");
+        list.add ("java");
+
+        Iterator<String> it = list.iterator ();
+//        while(it.hasNext ()){
+//            String s = it.next ();
+//            if(s.equals ("world")){
+//                list.add ("javaee");
+//            }
+//            System.out.println (list);
+//        }
+        for(int i = 0;i< list.size ();i++){
+            String s = list.get (i);
+            if(s.equals ("world")){
+                list.add ("javaee");
+            }
+
+        }
+
+    }
+}
+```
+
+## ListIterator
+
+ListIterator:列表迭代器
+
+- 通过List集合的listIterator()方法得到，所以说它是List集合特有的迭代器
+
+ListIterator中的常用方法
+
+- E next()：返回迭代中的下一个元素
+- boolean hasNext() ：如果迭代具有更多元素，则返回true
+- E previous()：返回列表中的上一个元素
+- boolean hasPrevious() ：如果此列表迭代器在相反方向遍历列表时具有更多元素，则返回true
+- void add(E e)：将指定元素插入列表
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public class Demo{
+    public static void main(String[] args){
+
+        //创建集合对象
+        List<String> list = new ArrayList<String> ();
+        //添加元素
+        list.add ("hello");
+        list.add ("world");
+        list.add ("java");
+
+//        通过List集合的listIterator()方法得到
+//        ListIterator<String> lit = list.listIterator ();
+//        while(lit.hasNext ()){
+//            String s = lit.next ();
+//            System.out.println (s);
+//        }
+//        System.out.println ("--------");
+//        //boolean hasPrevious() ：如果此列表迭代器在相反方向遍历列表时具有更多元素，则返回true
+//        while(lit.hasPrevious ()){
+//            //E previous()：返回列表中的上一个元素
+//            String s = lit.previous ();
+//            System.out.println (s);
+//        }
+
+        //void add(E e)：将指定元素插入列表
+        ListIterator<String> lit = list.listIterator ();
+        while(lit.hasNext ()){
+            String s = lit.next ();
+            if(s.equals ("world")){
+                lit.add ("javaee");
+            }
+        }
+        System.out.println (list);
+    }
+}
+```
+
+## 增强for循环
+
+增强for：简化数组和Collection集合的遍历
+
+- 实现Iterable接口的类允许其对象成为增强型for语句的目标
+- 它是JDK5以后出现的，其内部原理是一个Iterator迭代器
+
+格式：
+
+```java
+for(元素数据类型 变量名 : 数组或者Collection集合) {
+	//在此处使用变量即可，该变量就是元素
+}
+```
+
+例如：
+
+```java
+int[] arr = {1,2,3,4,5}
+
+for(int i : arr) {
+	System.out.print(i);
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ArrayList;
+
+public class Demo{
+    public static void main(String[] args){
+        int[] arr = {1,2,3,4,5};
+
+        for(int i:arr){
+            System.out.println (i);
+        }
+
+        System.out.println ("-------");
+
+        String[] strArray = {"hello","world","java"};
+        for(String s:strArray){
+            System.out.println (s);
+        }
+
+        System.out.println ("-------");
+
+        List<String> list = new ArrayList<String> ();
+        list.add ("hello");
+        list.add ("world");
+        list.add ("java");
+
+        for(String s:list){
+            System.out.println (s);
+        }
+
+        System.out.println ("-------");
+//        //内部是一个iterator迭代器
+//        for(String s : list){
+//            if(s.equals ("world")){
+//                list.add ("1");
+//            }
+//        }
+//        run不起来，所以内部是一个iterator迭代器
+    }
+}
+```
+
+## 三种遍历list方式
+
+```java
+public class Student{
+
+    private String name;
+    private int age;
+
+    public Student(){
+    }
+
+    public Student(String name ,int age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getAge(){
+        return age;
+    }
+
+    public void setAge(int age){
+        this.age = age;
+    }
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Demo{
+    public static void main(String[] args){
+
+        //创建list对象
+        List<Student> list = new ArrayList<> ();
+        //创建学生对象
+        Student s1 = new Student ("是",19);
+        Student s2 = new Student ("是d ",192);
+        Student s3 = new Student ("是df",1921);
+
+        list.add (s1);
+        list.add (s2);
+        list.add (s3);
+        //迭代器：集合遍历所有方式
+        Iterator<Student> it = list.iterator ();
+        while(it.hasNext ()){
+            Student s = it.next ();
+            System.out.println (s.getName ()+s.getAge ());
+        }
+        System.out.println ("--------");
+        //普通for
+        for(int i = 0;i<list.size ();i++){
+            Student s = list.get (i);
+            System.out.println (s.getName ()+s.getAge ());
+        }
+        System.out.println ("--------");
+        //增强for
+        for(Student s : list){
+            System.out.println (s.getName ()+s.getAge ());
+        }
+
+    }
+}
+```
+
+## List集合子类特点
+
+List集合常用子类：ArrayList、LinkedList
+
+- ArrayList：底层数据结构是数组，查询快，增删慢
+- LinkedList：底层数据结构是链表，查询慢，增删快
+
+分别使用ArrayList和LinkedList使用三种方式遍历
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+public class Demo{
+    public static void main(String[] args){
+        //创建集合对象
+        ArrayList<String> array = new ArrayList<String> ();
+        array.add ("hello");
+        array.add ("world");
+        array.add ("java");
+
+        //遍历
+
+        //增强for
+        for(String s : array) {
+            System.out.println (s);
+        }
+        //普通for
+        for(int i=0;i< array.size ();i++){
+            String s = array.get (i);
+            System.out.println (s);
+        }
+        //While
+        Iterator<String> it = array.iterator ();
+        while(it.hasNext ()){
+            System.out.println (it.next ());
+        }
+        System.out.println ("----------------");
+
+        LinkedList<String> linkedList = new LinkedList<String> ();
+        linkedList.add ("HELLO");
+        linkedList.add ("dasd");
+        linkedList.add ("das");
+        //增强for
+        for(String s : linkedList){
+            System.out.println (s);
+        }
+        //普通for
+        for(int i = 0;i< linkedList.size ();i++){
+            System.out.println (linkedList.get (i));
+        }
+        //while
+        Iterator<String>linkIt = linkedList.iterator ();
+        while (linkIt.hasNext ()){
+            System.out.println (linkIt.next ());
+        }
+
+    }
+}
+```
+
+## LinkedList集合的特有功能
+
+```java
+public void addFirst(E e) 在该列表开头插入指定的元素
+public void addLast(E e) 将指定的元素追加到此列表的末尾
+public E getFirst() 返回此列表中的第一个元素
+public E getLast() 返回此列表中的最后一个元素
+public E removeFirst() 从此列表中删除并返回最后一个元素
+public E removeLast() 从此列表中删除并返回最后一个元素
+```
+
+```java
+import java.util.LinkedList;
+
+public class Demo{
+    public static void main(String[] args){
+
+        LinkedList<String> linkedList = new LinkedList<String> ();
+        linkedList.add ("hello");
+        linkedList.add ("world");
+        linkedList.add ("java");
+
+        System.out.println (linkedList);
+
+//        public void addFirst(E e) 在该列表开头插入指定的元素
+        linkedList.addFirst ("javase");
+//        public void addLast(E e) 将指定的元素追加到此列表的末尾
+        linkedList.addLast ("javaee");
+        System.out.println (linkedList);
+
+//        public E getFirst() 返回此列表中的第一个元素
+//        public E getLast() 返回此列表中的最后一个元素
+        System.out.println (linkedList.getFirst ());
+        System.out.println (linkedList.getLast ());
+
+//        public E removeFirst() 从此列表中删除并返回最后一个元素
+//        public E removeLast() 从此列表中删除并返回最后一个元素
+        linkedList.removeFirst ();
+        linkedList.removeLast ();
+        System.out.println (linkedList);
+
+    }
+}
+```
+
+# Set
+
+## Set集合概述和特点
+
+- 不包含重复元素
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class Demo{
+    public static void main(String[] args){
+
+        //创建集合对象
+        Set<String> set = new HashSet<String> ();
+        set.add ("hello");
+        set.add ("world");
+        set.add ("java");
+//        set.add ("java");
+        //不包含重复元素
+
+        //遍历
+        for(String s : set){
+            System.out.println (s);
+        }
+    }
+}
+```
+
+## 哈希值
+
+哈希值：是JDK根据对象的地址或者字符串或者数字算出来的int类型数值
+
+Object类中有一个方法获取对象的哈希值
+
+- public int hashCode()：返回对象的哈希值
+
+对象哈希值的特点
+
+- 同一个对象多次调用hashCode()方法返回的哈希值是相同的
+- 默认情况下，不同对象的哈希值是不相同的，而重写hashCode()方法，可以让不同对象的哈希值相同
+
+```java
+public class Student{
+    private String name;
+    private int age;
+
+    public Student(){
+    }
+
+    public Student(String name ,int age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getAge(){
+        return age;
+    }
+
+    public void setAge(int age){
+        this.age = age;
+    }
+
+//    public int hashCode(){
+//        return 0;
+//    }
+}
+```
+
+```java
+public class Demo{
+    public static void main(String[] args){
+        //对象
+        Student s1 = new Student ("林青霞",19);
+
+//        同一个对象多次调用hashCode()返回的哈希值是相同的
+        System.out.println (s1.hashCode ());//1239731077
+        System.out.println (s1.hashCode ());//1239731077
+
+//        默认情况下不同的对象哈希值是不同的
+//        通过方法重写，可以实现不同对象的哈希值是相同的
+        Student s2 = new Student ("林青霞",19);
+        System.out.println (s2.hashCode ());//557041912
+        System.out.println (s2.hashCode ());//557041912
+        System.out.println ("------------------");
+        System.out.println ("hello".hashCode ());//99162322
+        System.out.println ("world".hashCode ());//113318802
+        System.out.println ("java".hashCode ());//3254818
+        System.out.println ("world".hashCode ());//113318802
+        System.out.println ("----");
+        System.out.println ("重".hashCode ());
+        System.out.println ("是".hashCode ());
+
+    }
+}
+```
+
+## 哈希表
+
+- JDK8之前，底层采用 数组+链表实现，可以说是一个元素为链表的数组
+- JDK8之后，在长度比较长的时候，底层实现了优化
+
+## LinkedHashSet集合概述特点
+
+LinkedHashSet集合特点
+
+- 哈希表和链表实现的Set接口，具有可预测的迭代次序
+- 由链表保证元素有序，也就是说元素的存储和取出是一致的
+- 由哈希表保证元素唯一，也就是说没有重复的元素
+- 存储字符串并遍历
+
+```java
+import java.util.LinkedHashSet;
+
+public class Demo {
+    public static void main (String[] args) {
+        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<String> ();
+        linkedHashSet.add ("hello");
+        linkedHashSet.add ("world");
+        linkedHashSet.add ("java");
+
+        linkedHashSet.add ("world");//输出不了
+
+        for(String s : linkedHashSet){
+            System.out.println (s);
+        }
+    }
+}
+```
+
+## TreeSet集合概述和特点
+
+- 元素有序，这里的顺序不是指存储和取出的顺序，而是按照一定的规则进行排序，具体排序方式取决于方法
+  - TreeSet()：根据其元素的自然排序进行排序
+  - TreeSet(Comparator comparator)：根据指定的比较器进行排序
+- 没有带索引的方法，所以不能使用普通for循环遍历
+- 由于是Set集合，不包含重复的元素
+
+TreeSet练习，存储Integer并且遍历
+
+```java
+import java.util.TreeSet;
+
+public class Demo{
+    public static void main (String[] args) {
+
+        //TreeSet<int> ts = new TreeSet<int> ();
+        TreeSet<Integer> ts = new TreeSet<Integer> ();
+        //添加元素
+        ts.add (10);
+        ts.add (30);
+        ts.add (20);
+        ts.add (50);
+        ts.add (12);
+        ts.add (12);//不能包含重复的
+
+        //遍历
+        for(Integer i : ts){
+            System.out.println (i);
+            //10
+            //12
+            //20
+            //30
+            //50
+            //自然排序
+        }
+    }
+}
+```
+
+## 自然排序Comparable的使用
+
+- 存储Student对象并且遍历，创建TreeSet集合使用无参构造方法
+- 按照年龄从小到大排序，年龄相同时，按照名字字母的顺序排序
+- 用TreeSet集合存储自定义对象，无参构造方法使用的是自然排序对元素进行排序的
+- 自然排序，就是让元素所属的类实现Comparable接口，重写comparaTo(T o)方法
+- 重写方法时，一定注意排序规则必须按照要求的主要条件和次要条件来写。
+
+```java
+public class Student implements Comparable<Student> {
+    private String name;
+    private int age;
+
+    public Student () {
+    }
+
+    public Student (String name ,int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName () {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+    public int getAge () {
+        return age;
+    }
+
+    public void setAge (int age) {
+        this.age = age;
+    }
+
+    //重写接口
+
+    @Override
+    public int compareTo (Student s) {
+        //return 0;只能输出1个，因为要对比，Student类型没法对比
+        //return 1;按照输入的顺序排序
+        //return -1;同上，反过来的
+
+        //按照年龄从小到大排序，年龄相同 时，按照名字字母的顺序排序
+
+        int num = this.age - s.age;//从小到大
+//        int num = s.age - this.age; 从大到小
+
+        //按照名字字母的顺序排序
+        int num2 = num==0?this.name.compareTo (s.name):num;
+        //return num;
+        return num2;
+
+    }
+}
+```
+
+```java
+import java.util.TreeSet;
+
+public class TreeSetDemo {
+    public static void main (String[] args) {
+        //创建集合对象
+        TreeSet<Student> ts = new TreeSet<Student> ();
+        //创建Student对象
+        Student s1 = new Student ("马牛逼",19);
+        Student s2 = new Student ("我的",20);
+        Student s3 = new Student ("打是的",23);
+        Student s4 = new Student ("是是",22);
+        Student s5 = new Student ("是三大",20);//输出不了，因为年龄相同，除非对名字也进行比较
+        Student s6 = new Student ("是是",22);//输出不了，因为TreeSet的元素唯一性
+
+        ts.add (s1);
+        ts.add (s2);
+        ts.add (s3);
+        ts.add (s4);
+        ts.add (s5);
+        ts.add (s6);
+        //遍历
+        for(Student s : ts){
+            System.out.println (s.getName ()+s.getAge ());
+        }
+
+    }
+}
+```
+
+## 比较器排序Comparator的使用
+
+- 存储学生对象并且遍历，创建TreeSet集合使用带参构造方法
+- 要求：按年龄从小到大排序，年龄相同时，按照姓名的字母顺序排序
+- 用TreeSet集合存储自定义对象，带参构造方法使用的是比较器排序对元素进行排序的。
+- 比较器排序，就是让集合构造方法接收Comparator的实现类对象，重写compare（T o1，T o2）方法
+- 重写方法时候，一定要注意排序规则必须按照要求的主要条件和次要条件来写
+
+```java
+import java.util.Comparator;
+import java.util.TreeSet;
+
+public class Demo {
+    public static void main (String[] args) {
+        //创建集合对象
+        TreeSet<Student> s = new TreeSet<Student> (new Comparator<Student> () {
+            @Override
+            public int compare (Student s1 ,Student s2) {
+                //this.age - s.age
+                //s1 = this
+                //s2 = s
+                int num = s1.getAge () - s2.getAge ();
+                int num2 = num==0?s1.getName ().compareTo (s2.getName ()):num;
+                return num2;
+            }
+        });
+
+        for (Student student : s) {
+            System.out.println (student.getName ()+student.getAge ());
+        }
+    }
+}
+```
+
+# 泛型
+
+## 泛型概述和好处
+
+泛型：是JDK5中引入的新特性，它提供了编译时类型安全检测机制，该机制允许在编译时检测到非法类型。
+
+它的本质是参数化类型。也就是说所操作的数据类型被指定为一个参数
+
+将类型由原来的具体的类型参数化，然后在使用/调用的时候传入具体的类型
+
+这种参数类型可以用在类，方法和接口中，分别被称为泛型类、泛型方法、泛型接口
+
+```java
+- <类型>：指定一种类型的格式，这里的类型可以看成形参
+
+- <类型1,类型2……>：指定多种类型的格式，多种类型之间用逗号隔开，这里的类型可以看成形参
+
+- 将来具体调用的时候给定的类型可以看成实参，并且实参的类型只能是引用数据类型
+
+- 好处：把运行期间的问题提前到了编译期间，避免了强制类型转化
+```
+
+
+
+```java
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+public class Demo {
+    public static void main (String[] args) {
+
+        //创建集合对象
+//        Collection cl = new ArrayList ();
+        Collection<String> cl = new ArrayList<String> ();
+        //添加元素
+        cl.add ("hello");
+        cl.add ("world");
+        cl.add ("java");
+//        cl.add (100);
+        //遍历集合
+//        Iterator iterator = cl.iterator ();
+        Iterator<String> iterator = cl.iterator ();
+
+        while(iterator.hasNext ()){
+//            Object next = iterator.next ();
+//            System.out.println (next);
+//            String s = (String) iterator.next ();//ClassCastException
+            String next = iterator.next ();
+            System.out.println (next);
+        }
+    }
+}
+```
+
+## 泛型类
+
+泛型类定义格式
+
+- 格式：修饰符class 类名<类型>{ }
+
+```java
+例如：public class Generic<T> { }
+```
+
+- 此处的T可以随便写，常见如T/E/K/V等形式通常表示泛型
+
+```java
+public class Student {
+    String name;
+
+    public String getName () {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+}
+```
+
+```java
+public class Teacher {
+
+    private Integer age;
+
+    public Integer getAge () {
+        return age;
+    }
+
+    public void setAge (Integer age) {
+        this.age = age;
+    }
+}
+```
+
+```java
+public class Teacher {
+
+    private Integer age;
+
+    public Integer getAge () {
+        return age;
+    }
+
+    public void setAge (Integer age) {
+        this.age = age;
+    }
+}
+```
+
+```java
+public class Demo {
+    public static void main (String[] args) {
+        Student s = new Student ();
+        s.setName ("学生");
+        System.out.println (s.getName ());
+        Teacher t = new Teacher ();
+        t.setAge (30);
+//        t.setAge ("30");
+        System.out.println (t.getAge ());
+        System.out.println ("--------");
+        Generic<String> g1 = new Generic<String> ();
+        g1.setT ("马牛逼");
+        Generic<Integer> g2 = new Generic<Integer> ();
+        g2.setT (19);
+        Generic<Boolean> g3 = new Generic<Boolean> ();
+        g3.setT (true);
+
+        System.out.println (g1.getT ()+g2.getT ()+g3.getT ());
+    }
+}
+```
+
+## 泛型方法
+
+泛型方法定义格式：
+
+```java
+- 格式：修饰符<类型>返回值类型 方法名（类型 变量名）{}
+- 例如：public<T> void show(T t){ }
+```
+
+```java
+//public class Generic {
+//    public void show(String s){
+//        System.out.println (s);
+//    }
+//    public void show(Integer it){
+//        System.out.println (it);
+//    }
+//    public void show(Boolean b){
+//        System.out.println (b);
+//    }
+//}
+//改进1
+//public class Generic<T> {
+//    public void show(T t){
+//        System.out.println (t);
+//    }
+//}
+//改进2
+public class Generic {
+    public <T> void show(T t){
+        System.out.println (t);
+    }
+}
+```
+
+```java
+public class GenericDemo {
+    public static void main (String[] args) {
+//        Generic g = new Generic ();
+//        g.show ("马牛逼");
+//        g.show (30);
+//        g.show (true);
+//        g.show (13.14);
+
+        Generic g = new Generic ();
+        g.show ("我");
+        g.show (1);
+        g.show (12.1);
+        g.show (true);
+    }
+}
+```
+
+## 泛型接口
+
+泛型接口定义格式
+
+```java
+格式：修饰符 interface 接口名<类型>{ }
+```
+
+```java
+例如：public interface Generic<T> { }
+```
+
+```java
+public interface Generic<T> {
+    void show(T t);
+}
+```
+
+```java
+public class GenericImpl<T> implements Generic<T>{
+    @Override
+    public void show (T t) {
+        System.out.println (t);
+    }
+}
+```
+
+```java
+public class GenericDemo {
+    public static void main (String[] args) {
+        Generic<String> g1 = new GenericImpl<String> ();
+        g1.show ("大苏打");
+        Generic<Integer> g2 = new GenericImpl<Integer> ();
+        g2.show (211);
+    }
+}
+```
+
+## 类型通配符
+
+为了表示各种泛型List父类，可以使用类型通配符
+
+```java
+- 类型通配符：<?>
+
+- List<?>：表示元素类型未知的List，它的元素可以匹配任何的类型
+
+- 这种带通配符的List仅表示它是各种泛型List的父类，并不能把元素添加其中
+```
+
+
+
+
+
+```java
+如果说不希望List<?>是任何泛型List的父类，只希望它代表某一类泛型List的父类，可以使用类型通配符的上限
+
+- 类型通配符上限：<?extends 类型>
+- List<? extends Number>：它表示的类型是Number或者其它子型
+```
+
+
+
+```java
+除了可以指定类型通配符的上限，也可以指定类型通配符的下限
+
+- 类型通配符的下限：<?super 类型>
+- List<? super Number>：它表示的类型是Number或者其父类型
+```
+
+
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class GenericDemo {
+    public static void main (String[] args) {
+//        类型通配符：<?>
+        List<?> list1 = new ArrayList<Object> ();
+        List<?> list2 = new ArrayList<Number> ();
+        List<?> list3 = new ArrayList<Integer> ();
+        System.out.println ("--------");
+//        类型通配符上限：<?extends 类型>
+//        List<? extends Number> list4 = new ArrayList<Object> ();上限是Number，所以不能是Number的父类
+        List<? extends Number> list5 = new ArrayList<Number> ();
+        List<? extends Number> list6 = new ArrayList<Integer> ();
+        System.out.println ("--------");
+//        类型通配符的下限：<?super 类型>
+        List<? super Number> list7 = new ArrayList<Object> ();
+        List<? super Number> list8 = new ArrayList<Number> ();
+//        List<? super Number> list9 = new ArrayList<Integer> ();下限！！！
+    }
+}
+```
+
+## 可变参数
+
+可变参数又称参数个数可变，用做方法的形参出现，那么方法参数个数是可变的
+
+- 格式：修饰符 返回值类型 方法名（数据类型...变量名）{ }
+- 例如：public static int sum(int...a){ }
+
+注意事项
+
+- 这里的变量其实是一个数组
+
+- 如果一个方法有多个参数，包含可变参数，可变参数要放在最后
+
+  ```java
+  public class Demo {
+      public static void main (String[] args) {
+          System.out.println (sum (10));
+          System.out.println (sum (10,20));
+          System.out.println (sum (10,20,30));
+      }
+  //    public static int sum(int... a) {
+  ////        System.out.println (a);
+  ////        return 0;
+  //        int sum = 0;
+  //
+  //        for (int i : a){
+  //            sum += i;
+  //        }
+  //    return sum;
+  //    }
+      public static int sum(int b,int... a){
+          return 0;
+      }
+  }
+  ```
+
+## 可变参数的使用
+
+```java
+Arrays工具类中有一个静态方法：
+
+- public static <T> List <T> asList(T...a)：返回由指定数组支持的固定大小的列表
+- 返回的集合不能增删操作，可以修改操作
+
+List接口中有一个静态方法：
+
+- public static <E>List<E> of(E...elements)：返回包含任意数量元素的不可变表
+- 返回的集合不能增删改操作
+
+Set接口中有一个静态方法：
+
+- public static <E>Set<E> of(E...elements)：返回一个包含任意数量元素的不可变集合
+- 在给元素的时候，不能给重复的元素
+- 返回类集合不能做自身操作，没有修改的方法
+```
+
+
+
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+
+        System.out.println ("------------------------------------------");
+//        List<String> list = Arrays.asList ("hello" ,"world" ,"java");
+//        System.out.println (list);
+////        list.add ("javaee");不能使用添加和删除，因为会修改大小
+////        list.remove ("world");不能使用添加和删除，因为会修改大小
+//        list.set (1,"javaee");可以改
+        System.out.println ("------------------------------------------");
+//        - public static <E>List<E> of(E...elements)：返回包含任意数量元素的不可变表
+//        List<String> list = List.of ("hello" ,"world" ,"java","world");//List集合可以有重复元素
+//        System.out.println (list);
+        ////        list.add ("javaee");不能使用添加和删除，因为会修改大小
+        ////        list.remove ("world");不能使用添加和删除，因为会修改大小
+        ////        list.set (1,"javaee");增删改都不行
+        System.out.println ("------------------------------------------");
+        //        - public static <T> List <T> asList(T...a)：返回由指定数组支持的固定大小的列表
+        Set<String> set = Set.of ("hello" ,"world" ,"java");//不能重复元素
+        System.out.println (set);
+//        set.add ("javaee");不能添加
+//        set.remove ("java");//不能删除
+        
+    }
+}
+```
+
+# Map
+
+## Map集合概述和特点
+
+```java
+- Interface Map<K,V> K：键的类型；V：值的类型
+- 将键映射到值的对象；不能包含重复的键；每个键最多映射一个值
+```
+
+
+
+创建Map集合的对象
+
+- 多态的方式
+- 具体的实现类HashMap
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Demo {
+    public static void main (String[] args) {
+        //创建集合对象
+        Map<String,String> map = new HashMap<String,String> ();
+        map.put ("sb","马牛逼");
+        map.put ("2b","黑手");
+        map.put ("独立sb","虎哥");
+        System.out.println (map);
+    }
+}
+```
+
+## Map集合的基本功能
+
+- V put(K key,V value) 添加元素
+- V remove(Object Key) 移除元素
+- void clear() 清空所有的键值对元素
+- boolean containsKey(Object Key) 判断集合是否包含指定的键
+- boolean containsValue(Object Key) 判断集合是否包含指定的值
+- boolean isEmpty() 判断集合是否为空
+- int size() 集合的长度，也就是元素的个数
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Demo {
+    public static void main (String[] args) {
+        Map<String,String> map = new HashMap<String,String> ();
+
+        map.put ("我是马牛逼","asdsa");
+        map.remove ("我是马牛逼");
+        map.clear ();
+        map.containsKey ("我是马牛逼");
+        map.containsValue ("我是马牛逼");
+        map.isEmpty ();
+        map.size ();
+        
+    }
+}
+```
+
+## Map集合的获取功能
+
+```java
+- V get(Obejct key) 根据键 获取值
+- Set<K> keySet() 获取所有键的集合
+- Collection<V> values() 获取所有值的集合
+- Set<Map.Entry<K,V>>entrySet() 获取所有键值对对象的集合
+```
+
+
+
+```java
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+        Map<String,String> map = new HashMap<String,String> ();
+        map.put ("sss","ss1");
+        map.put ("ssss","ss2");
+        map.put ("sssss","ss3");
+
+//        System.out.println (map.get ("sss"));
+
+//        Set<String> keySet = map.keySet ();
+//        for(String key : keySet){
+//            System.out.println (key);
+//        }
+
+        Collection<String> values = map.values ();
+        for(String value:values){
+            System.out.println (value);
+        }
+    }
+}
+```
+
+## Map集合的遍历-方式一
+
+- 获取所有Key的值，用KeySet()方法实现
+- 遍历Key的集合，获取到每一个Key，用增强for实现
+- 根据key去查找，用get(Object key)实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+        Map<String,String> map = new HashMap<String,String> ();
+        map.put ("sss","ss1");
+        map.put ("ssss","ss2");
+        map.put ("sssss","ss3");
+
+        //获取所有Key的值，用KeySet()方法实现
+        Set<String> keySet = map.keySet ();
+        for(String key : keySet){
+            //根据key去查找，用get(Object key)实现
+            String s = map.get (key);
+            System.out.println (key+","+s);
+        }
+    }
+}
+```
+
+## Map集合的遍历-方式二
+
+```java
+- 获取所有Key值对对象的集合
+- Set<Map.Entry<K,V>>entrySet()：获取所有Key对对象的集合
+- 用增强for获得每一个Map.Entry
+- 根据Key值的对象获得Key和Value
+- 用getKey()获得Key
+- 用getValue()获得Value
+```
+
+
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+        Map<String,String> map = new HashMap<String,String> ();
+        map.put ("sss","ss1");
+        map.put ("ssss","ss2");
+        map.put ("sssss","ss3");
+
+        //获取所有键值对象集合
+        Set<Map.Entry<String, String>> entrySet = map.entrySet ();
+        //得到每一个Key对对象
+        for(Map.Entry<String,String> me : entrySet) {
+            //根据Key值对对象获取Key和Value
+            String key = me.getKey ();
+            String value = me.getValue ();
+            System.out.println (key+","+value);
+        }
+    }
+}
+```
+
+# Collections
+
+## Collections概述和使用
+
+- 是针对集合操作的工具类
+
+## Collections类的常用方法
+
+```java
+- public static <T extends Comparable<? super T>> void sort(List<T> list)：将指定的列表按升序排列
+- public static void reverse(List<?> list)：反转指定列表中的元素的顺序
+- public static void shuffle(List<?> list)：使用默认的随机源随机排列指定的列表
+```
+
+
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Demo {
+    public static void main (String[] args) {
+        //创建集合对象
+        List<Integer> list = new ArrayList<> ();
+
+        //添加元素
+        list.add (50);
+        list.add (20);
+        list.add (30);
+        list.add (10);
+        list.add (40);
+        System.out.println (list);
+
+        //public static <T extends Comparable<? super T>> void sort(List<T> list)：将指定的列表按升序排列
+        Collections.sort (list);
+        System.out.println (list);
+        //public static void reverse(List<?> list)：反转指定列表中的元素的顺序
+        Collections.reverse (list);
+        System.out.println (list);
+        //public static void shuffle(List<?> list)：使用默认的随机源随机排列指定的列表
+        Collections.shuffle (list);
+        System.out.println (list);
+    }
+}
+```
+
+# File
+
+## File类概述和构造方法
+
+File：他是文件和目录路径名的抽象表示
+
+- 文件和目录是可以通过File封装成对象的
+- 对于File而言，其封装的并不是一个真正存在的文件，仅仅是一个路径名而已，它可以是真实存在的，也可以是不存在的。将来是要通过具体的操作把这个路径的内容转换为具体存在的。
+
+File(String pathname) 通过将给定的路径名字字符串转换为抽象路径名来创建新的File实例
+
+File(String parent,String child) 从父路径名字字符串和子路径名字字符串创建新的File实例
+
+File(File parent, String child) 从父抽象路径名和子路径名字字符串创新的File实例
+
+```java
+import java.io.File;
+
+public class Demo {
+    public static void main (String[] args) {
+
+//        File(String pathname) 通过将给定的路径名字字符串转换为抽象路径名来创建新的File实例
+        File f1 = new File ("H:\\untitled4\\src\\java.txt");
+        System.out.println (f1);
+//        File(String parent,String child) 从父路径名字字符串和子路径名字字符串创建新的File实例
+        File f2 = new File ("H:\\\\untitled4","java.txt");
+        System.out.println (f2);
+//        File(File parent, String child) 从父抽象路径名和子路径名字字符串创新的File实例
+        File f3 = new File ("H:\\\\untitled4");
+        File f4 = new File (f3,"java.txt");
+        System.out.println (f4);
+
+    }
+}
+```
+
+## File类创建功能
+
+public boolean createNewFile() 当具有该名称的文件不存在时，创建一个由该抽象路径名命名的新空文件
+
+public boolean mkdir() 创建由此抽象路径名命名的目录
+
+public bollean mkdirs() 创建由此抽象路径名命名的目录，包括任何必须但不存在的父目录
+
+```java
+import java.io.File;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+
+        File f1 = new File ("H:\\untitled4\\java.txt");
+        System.out.println (f1.createNewFile ());//alt+enter
+
+        File f2 = new File ("H:\\untitled4\\javaSE");
+        System.out.println (f2.mkdir ());
+
+        File f3 = new File ("H:\\untitled4\\javaWeb\\Html");
+        System.out.println (f3.mkdir ());//不可以的，因为没有JavaWeb目录，所以创建不了
+
+        File f4 = new File ("H:\\untitled4\\javaWeb\\Html");
+        System.out.println (f3.mkdirs ());
+        
+    }
+}
+```
+
+## File类判断和获取功能
+
+public boolean isDirectory()：测试此抽象路径名表示的File是否为目录
+
+public boolean isFile()：测试此抽象路径名表示的File是否为文件
+
+public boolean exists()：测试此抽象路径名表示的File是否存在
+
+public String getAbsolutePath()：返回此抽象路径名的绝对路径名字字符串
+
+public String getPath()：将此抽象路径名转换为路径名字字符串
+
+public String getName()：返回由此抽象路径名表示文件或目录的名称
+
+public String[] list()：返回此抽象路径名表示文件的目录中的文件和目录的字符串数组
+
+public File[] listFiles()：返回此抽象路径名表示的目录中的文件和目录的File对象数组
+
+```java
+import java.io.File;
+
+public class Demo {
+    public static void main (String[] args) {
+
+        File f = new File ("H:\\untitled4\\java.txt");
+//        public boolean isDirectory()：测试此抽象路径名表示的File是否为目录
+        System.out.println (f.isDirectory ());
+//        public boolean isFile()：测试此抽象路径名表示的File是否为文件
+        System.out.println (f.isFile ());
+//        public boolean exists()：测试此抽象路径名表示的File是否存在
+        System.out.println (f.exists ());
+//        public String getAbsolutePath()：返回此抽象路径名的绝对路径名字字符串
+        System.out.println (f.getAbsolutePath ());
+//        public String getPath()：将此抽象路径名转换为路径名字字符串
+        System.out.println (f.getPath ());
+//        public String getName()：返回由此抽象路径名表示文件或目录的名称
+        System.out.println (f.getName ());
+        System.out.println ("-----------");
+//        public String[] list()：返回此抽象路径名表示文件的目录中的文件和目录的字符串数组
+//        public File[] listFiles()：返回此抽象路径名表示的目录中的文件和目录的File对象数组
+        File f2 = new File ("H:\\untitled4");
+
+        String[] strArray = f2.list ();
+        for(String str : strArray){
+            System.out.println (str);
+        }
+
+        System.out.println ("---------");
+        File[] fileArray = f2.listFiles ();
+        for(File file : fileArray){
+            if(file.isFile ()){
+                System.out.println (file.getName ());
+            }
+        }
+
+    }
+}
+```
+
+## File类的删除功能
+
+public boolean detele() 删除由此抽象路径名表示的目录或者文件
+
+绝对路径：完整的路径名，不需要其它信息就可以定位它所表示的文件，例如：C:\\JAVA\JAVA.TXT
+
+相对路径：不完整的路径名，必须使用取自其它路径名的信息进行解释，例如：JAVA\JAVA.TXT
+
+```java
+import java.io.File;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        File f1 = new File ("src\\Java.txt");
+        System.out.println (f1.createNewFile ());
+
+        System.out.println (f1.delete ());
+    }
+}
+```
+
+## File删除的注意事项
+
+如果一个目录中由内容（目录，文件），不能直接删除，应该先删除内容最后删除目录
+
+## 递归
+
+递归概述：以编程角度来看，递归指的是方法定义中调用方法的本身
+
+递归解决问题思路：
+
+把一个复杂的问题层层转化成一个与原问题相似的规模较小的问题来求解
+
+递归策略只需少量的程序就可以描述出解题过程中需要多少次重复计算
+
+递归解决问题要找到两个内容：
+
+- 递归出口：否则会出现内存溢出
+- 递归规则：与原问题相似的规模较小的问题
+
+```java
+public class Demo {
+    public static void main (String[] args) {
+        //调用方法
+        int score = jc (5);
+        //输出结构
+        System.out.println ("5的阶层是"+score);
+    }
+    //定义一个方法，用于递归求阶层，参数作为一个int类型的变量
+        //方法内部判断该变量是否为1
+    public static int jc(int n){
+        if(n==1){
+            return 1;
+        }
+        else {
+            return n*jc(n-1);
+        }
+    }
+
+}
+
+```
+
+# IO流
+
+## IO流概述
+
+- IO：输入 / 输出 (Input/Output)
+- 流：是一种抽象概念，对数据传输的总称，也就是说数据在设备间的传输称为流，流的本质是数据传输
+- IO流是用来处理设备间数据传输的问题
+  - 常见的应用：文件复制，文件上传，文件下载
+
+## IO流分类
+
+- 按照数据的流向
+  - 输入流：读数据
+  - 输出流：写数据
+- 按照数据类型来分
+  - 字节流：字节输入流；字节输出流
+  - 字符流：字符输入流；字符输出流
+
+一般来说，IO流的分类是根据数据类型来分的
+
+- 如果数据通过Windows自带的TXT打开，能看的懂，就用字符流
+- 否则使用字节流。
+
+## 字节流写数据
+
+- InputStream：这个抽象类是表示字节输入流所有类的超类
+- OutputStream：这个抽象类是表示字节输出流所有类的超类
+- 子类名特点：子类名称都是以其父类名作为子类名的后缀
+
+FileOutputStream：文件输出流将数据写入File
+
+- FileOutputStream(String name)：创建文件输出流以指定的名称写入文件
+
+使用字节输出流写数据的步骤
+
+- 创建字节输出对象（调用系统功能创建了文件夹，创建字节输出流对象，让字节输出流对象指向文件）
+- 调用字节输出流对象的写数据方法
+- 释放资源（关闭此文件输出流并释放与此流相关的任何系统资源）
+
+```java
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Demo {
+    public Demo() {
+    }
+
+    public static void main(String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream("H:\\untitled4\\fox.txt");
+        fos.write(97);
+        fos.close();
+    }
+}
+```
+
+## 字节流写数据的三种方式
+
+void write(int b)：将指定的字节写入此文件输出流，一次写一个字节数据
+
+void write(byte[] b)：将b.length字节从指定的字节数组写入此文件输出流，一次写一个字节数组数据
+
+void write(byte[] b,int off,int len)：将len字节从指定的字节数组开始，从偏移量off开始写入此文件输出流，一次写一个字节数组的部分数据
+
+```java
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream ("H:\\untitled4\\javase.txt");
+        fos.write (97);
+//        byte[] bys = {1,2,3,4,5};
+        byte[] bys ="abcde".getBytes();
+        fos.write (bys);
+        fos.write (bys,0,bys.length);
+        
+        fos.close ();
+    }
+}
+```
+
+## 字节流写数据的换行和追加写入
+
+- 写完数据后，加换行符
+  - widows:\r\n
+  - linux:\n
+  - mac:\r
+- 追加写入
+  - public FileOutputStream(String name,boolean append)
+  - 创建文件输出流以指定的名称写入文件，如果第二个参数为true，则字节将写入文件的末尾而不是开头
+
+```java
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream ("H:\\untitled4\\javase.txt",true);
+
+        for(int i = 0;i < 10; i++){
+            fos.write("hello".getBytes());
+            fos.write ("\r\n".getBytes());
+        }
+
+        fos.close ();
+    }
+}
+```
+
+## 字节流写数据加异常处理
+
+```java
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream ("H:\\untitled4\\javase.txt" ,true);
+            fos.write ("hello".getBytes ());
+        }catch (IOException e){
+            e.printStackTrace ();
+        }finally {
+            if(fos!=null){
+                try {
+                    fos.close ();
+                }catch (IOException e) {
+                    e.printStackTrace ();
+                }
+            }
+        }
+    }
+}
+```
+
+## 字节流读取数据（一次读一个字节数据）
+
+把fos.txt中的内容输出在控制台
+
+- FileInputStream(String name)：通过打开与实际文件的链接来创建一个FileInputStream，该文件由文件系统中的路径名name命名
+
+```java
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream ("H:\\untitled4\\javase.txt");
+
+//        int read = fis.read ();
+//        System.out.println (read);
+//        System.out.println ((char)read);
+//
+//        read = fis.read ();
+//        System.out.println (read);
+//        System.out.println ((char)read);
+//
+//        read = fis.read ();
+//        System.out.println (read);
+//        System.out.println ((char)read);
+//
+//        read = fis.read ();
+//        System.out.println (read);
+//        System.out.println ((char)read);
+
+//        int by = fis.read ();
+//        while(by!=-1){
+//            System.out.println ((char) by);
+//            by = fis.read ();
+//        }
+        //优化
+        int by;
+        while((by= fis.read ())!=-1){
+            System.out.println ((char)by);
+        }
+
+        fis.close ();
+    }
+}
+```
+
+## 字节流读取数据（一次读一个字节数组）
+
+
