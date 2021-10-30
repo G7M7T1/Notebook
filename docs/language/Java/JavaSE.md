@@ -6881,10 +6881,11 @@ public class Demo  {
 - Properties可以保存到流中或者从流中加载
 
   
-
+```java
 - Object setProperty(String key,String value) 设置集合的Key和Value，都是String类型，底层调用Hashtable方法 put
 - String getProperty(String key) 使用此属性列表中的Key搜索属性
 - Set<String> stringPropertyNames() 从该属性列表中返回一个不可修改的Key集，其中Key及其对应的值是字符串
+```
 
 ```java
 import java.util.Properties;
