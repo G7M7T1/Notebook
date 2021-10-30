@@ -6,17 +6,17 @@ const FeatureList = [
   {
     title: "G7M7T1",
     Svg: require("../../static/img/2.svg").default,
-    description: <>Text here</>,
+    description: <>Developer / Graphic Designer</>,
   },
   {
     title: "Xpakeb13",
     Svg: require("../../static/img/1.svg").default,
-    description: <>Text here</>,
+    description: <>Developer / Software Developer</>,
   },
   {
     title: "AsheOne",
     Svg: require("../../static/img/3.svg").default,
-    description: <>Text here</>,
+    description: <>Developer / Back-end Engineer</>,
   },
 ];
 

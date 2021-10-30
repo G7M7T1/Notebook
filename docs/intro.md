@@ -33,16 +33,13 @@ sidebar_label: '介绍文档'
 那么这里其实也很好解释, 位置 **2** 代表了它在我们刚刚例子中的 **介绍文档** 的下方, 而第一行代码则代表了显示的名称. 至于为什么这么写其实主要是为了不妨碍文件夹中其他的 Markdown 文件排序, 或者你想做一个类中类你也会明白我的意思. 如果我们不有一个专门的文件来说明这个类的位置那么又能写在哪里呢? 毕竟文件夹里的 Markdown 文件也需要 `sidebar_position` 来进行排序
 
 ## 文档包含
- - 编程语言
-   - Java
-     - Java SE
-     - Java Web
-   - Ruby
-   - C / C++
-   - JavaScript
- - 网页编程
- - 移动编程
- - 桌面编程
- - 游戏编程
- - 数据管理
- - 项目列表
+以下类别每个类里都会有一个或者多个目录, 在添加新的 Markdown 文件时请尽量多目录. 不要弄的一个文件里几万几十万行代码或者说明, 这样会造成一些延迟方面的问题
+
+`编程语言 - 网页编程 - 移动编程 - 桌面编程 - 游戏编程 - 数据管理 - 项目列表`
+
+## 目前需定
+目前我们需要确定很多的地方应该写成什么或者换成什么, 比如网站的详细说明, 如下是我临时写来凑字的, 如果有更好的建议可以自己去替换一下, 文件在 `src/pages/index.js` 之中的 **description**
+```html
+      <meta property="og:description" 
+      content="Notebook - Made by G7M7T1 and Xpakeb13 and AsheOne - Welcome to the website, here are our study notes and our blog"/>
+```
