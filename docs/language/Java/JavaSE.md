@@ -6154,4 +6154,1580 @@ public class Demo {
 
 ## 字节流读取数据（一次读一个字节数组）
 
+```java
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream ("H:\\untitled4\\javase.txt");
+        byte[] bys = new byte[1024];
+
+        int len;
+        while((len=fis.read (bys))!=-1){
+            System.out.println (new String (bys,0,len));
+        }
+
+        fis.close ();
+    }
+}
+```
+
+
+
+## 字节缓冲流
+
+- BufferOutputStream：该类实现缓冲输出流，通过设置这样的输出流，应用程序可以向底层输出流写入字节，而不必为写入的每个字节导致底层系统的调用
+- BufferedInputStream：创建BufferedInputStream将创建一个内部缓冲区数组。当从流中读取或跳过字节时，内部缓冲区将根据需要从所包含的输入流中重新填充，一次很多字节
+
+构造方法：
+
+- 字节缓冲输出流：BufferedOutputStream(OutputStream out)
+- 字节缓冲输入流：BufferedInputStream(InputStream in)
+
+- 字节缓冲流仅仅提供缓冲区，而真正读写数据还得依靠基本的字节流对象进行操作
+
+```java
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        //字节缓冲输出流：BufferedOutputStream(OutputStream out)
+//
+////        FileOutputStream fos = new FileOutputStream ("H:\\untitled4\\javase.txt");
+////        BufferedOutputStream bos = new BufferedOutputStream (fos);
+//        //合成为1步
+//        BufferedOutputStream bos = new BufferedOutputStream (new FileOutputStream ("H:\\\\untitled4\\\\javase.txt"));
+//        //写数据
+//        bos.write ("hello\r\n".getBytes());
+//        bos.write ("hello\r\n".getBytes());
+//
+//        bos.close ();
+//
+
+
+        //字节缓冲输入流：BufferedInputStream(InputStream in)
+        BufferedInputStream bis = new BufferedInputStream (new FileInputStream ("H:\\untitled4\\javase.txt"));
+        //一次读取一个字节数据
+//        int by;
+//        while((by=bis.read ())!=-1){
+//            System.out.println (by);
+//        }
+
+        //一次读取一个字节数组的数据
+        byte[] bys = new byte[1024];
+        int len;
+        while((len=bis.read (bys))!=-1){
+            System.out.println (new String (bys,0,len));
+        }
+
+        bis.close ();
+    }
+}
+```
+
+# 字符流
+
+## 为什么出现字符流
+
+由于字节流操作中文不方便，所以Java提供字符流
+
+- 字符流 = 字节流+编码表
+
+用字节流复制文本文件时，文件也会有中文，原因是最终底层操作会自动进行字节拼接成中文。
+
+- 汉字在存储时，无论选择哪种编码存储，第一个字节都是负数
+
+## 编码表
+
+- 计算机中储存的信息是由二进制（Bin）表示。
+- 按照某种规则，将字符储存到计算机中，称为编码，反之，将储存在计算机中的二进制数按照某种规则解析显示出来，称为解码。按照X编码存储，必须按照X编码解析，这样才能显示正确的文本符号。否则就乱码。
+
+## 字符集
+
+- 是一个系统支持的所有字符集合，包括所有国家文字，符号。
+- 计算机要准确的存储识别各种字符集符号，就需要进行字符解码，一套字符集必然有一套字符编码。
+  - 常见字符集有ASCII、GBXXX、Unicode等
+- ASCII（American Standard Code for Information Interchange，美国信息交换标准编码）：基于拉丁字母一套编码系统，用于显示现代英语，主要包括控制字符（回车键、退格、换行）和可显示字符（英文大小写字符，阿拉伯数字，西文符号）
+- 基本的ASCII字符集，使用7位表示一个字符，共128字符。ASCII的扩展字符集使用8位表示一个字符，共256字符，方便支持欧洲常用字符。是一个系统支持的所有字符的集合，包括各个国家文字，标点符号，图形符号，数字等
+- GBXXX字符集（中文的。。。不想写了，手断了）
+- Unicode字符集
+- 标准万国码，最常用UTF-8。其它不需要知道了。因为太长了，懒得打字。
+
+## 字符串中的编码解码问题
+
+编码
+
+- byte[] getBytes()：使用平台的默认字符集将该String编码为一系列字节，将结果存储的字节数组中
+- byte[] getBytes(String charsetName)：使用指定的字符集将该String编码为一系列字节，将结果存储到新的字节数组中。
+
+
+
+解码
+
+- String(byte[] bytes)：通过使用平台的默认字符集解码指定的字节数组来构造新的String
+- String(byte[] bytes,String charsetName)：通过指定的字符集解码指定的字节数组来构造新的String
+
+```java
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+public class StringDemo {
+    public static void main (String[] args) throws UnsupportedEncodingException {
+        String s = "中国";
+        //byte[] getBytes()：使用平台的默认字符集将该String编码为一系列字节，将结果存储的字节数组中
+        byte[] bys = s.getBytes ();
+        System.out.println (Arrays.toString (bys));//[-28, -72, -83, -27, -101, -67]
+        //byte[] getBytes(String charsetName)：使用指定的字符集将该String编码为一系列字节，将结果存储到新的字节数组中。
+        byte[] bytes = s.getBytes (StandardCharsets.UTF_8);
+        byte[] bytes1 = s.getBytes ("GBK");
+        System.out.println (Arrays.toString (bytes));//[-28, -72, -83, -27, -101, -67]
+        System.out.println (Arrays.toString (bytes1));//[-42, -48, -71, -6]
+
+
+        System.out.println ("-------------------");
+        //String(byte[] bytes)：通过使用平台的默认字符集解码指定的字节数组来构造新的String
+        String ss = new String (bys);
+        System.out.println (ss);//中国，默认字符集
+
+        //String(byte[] bytes,String charsetName)：通过指定的字符集解码指定的字节数组来构造新的String
+        String sss = new String (bys,"UTF-8");//中国
+        String ssss = new String (bys,"GBK");//涓浗,因为编码是UTF-8，解码是GBK
+        String sssss = new String (bytes1,"GBK");//中国，编码是GBK,解码是GBK
+
+        System.out.println (sss);
+        System.out.println (ssss);
+        System.out.println (sssss);
+
+
+
+    }
+}
+```
+
+## 字符流中的编码解码问题
+
+字符流抽象基类
+
+- Reader：字符输入流的抽象类
+- Writer：字符输出流的抽象类
+
+字符流中的编码解码问题相关的两个类
+
+- InputStreamReader
+- OutputStreamWriter
+
+```java
+import java.io.*;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        FileOutputStream fos = new FileOutputStream ("untitled\\javase.txt");
+//        OutputStreamWriter osw = new OutputStreamWriter (fos);
+        //合并为一部
+
+//        OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream ("H:\\untitled4\\javase.txt"),"UTF-8");//中国
+        OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream ("H:\\untitled4\\javase.txt"),"GBK");//�й�
+        osw.write ("中国");
+        osw.close ();
+        InputStreamReader isr = new InputStreamReader (new FileInputStream ("H:\\untitled4\\javase.txt"),"GBK");
+        //一次读一个字符
+        int ch;
+        while((ch=isr.read ())!=-1){
+            System.out.print ((char)ch);
+        }
+        isr.close ();
+    }
+}
+```
+
+## 字符流写数据的5个方式
+
+- void write(int c) 写一个字符
+
+- void write(char[] cbuf) 写入一个字符数组
+
+- void write(char[] cbuf,int off,int len) 写入字符数组的一部分
+
+- void write(String str)写入一个字符串
+
+- void write(String str,int off,int len)写入一个字符串的一部分
+
+- flush() 刷新流，还可以继续写数据
+
+- close() 关闭流，释放资源，但是在关闭之前会刷新流一次，一旦关闭就不能写数据
+
+  ```java
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.io.OutputStreamWriter;
+  
+  public class Demo {
+      public static void main (String[] args) throws IOException {
+          OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream ("H:\\untitled4\\javase.txt"));
+  
+          //void write(int c) 写一个字符
+          osw.write (97);
+          //void flush()刷新流
+          osw.flush ();
+          osw.write (98);
+          osw.flush ();
+          osw.write (99);
+  
+          //void write(char[] cbuf) 写入一个字符数组
+          char[] chs = {'a','b','c'};
+          osw.write (chs);
+  
+  //        void write(char[] cbuf,int off,int len) 写入字符数组的一部分
+  //        osw.write (chs,0,chs.length);
+  
+  //        void write(String str)写入一个字符串
+          osw.write ("abcde");
+  //        void write(String str,int off,int len)写入一个字符串的一部分
+          osw.write ("1234567",0,7);
+          osw.write ("abcdef",0,"abcdef".length ());
+          osw.close ();
+  
+      }
+  }
+  ```
+
+## 字节流读数据的2个方式
+
+- int read() 一次读一个字符数据
+- int read(char[] cbuf) 一次读一个字符数组数据
+
+```java
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        InputStreamReader isr = new InputStreamReader (new FileInputStream ("H:\\untitled4\\javase.txt"));
+
+        //int read() 一次读一个字符数据
+        int ch;
+        while((ch=isr.read ())!=-1){
+            System.out.print ((char)ch);
+        }
+
+        //int read(char[] cbuf) 一次读一个字符数组数据
+        char[] chs = new char[1024];
+        int len;
+        while((len=isr.read (chs))!=-1){
+            System.out.print (new String (chs,0,len));
+        }
+        isr.close ();
+    }
+}
+```
+
+# 字节缓冲流
+
+## 字符缓冲流
+
+- BufferedWriter：将文本写入字符输出流，缓冲字符，以提供单个字符，数组，字符串的高效写入，可以指定缓冲区大小，或者可以接受默认大小。默认值足够大，可以用于大多数用途。
+- BufferedReader：从字符输出流读取文本，缓冲字符，以提供字符，数组和行的高效读取，可以指定缓冲区大小，或者可以使用默认大小。默认值足够大，可以用于大多数用途。
+
+构造方法
+
+- BufferedWriter(Writer out)
+- BufferedReader(Reader in)
+
+```java
+import java.io.*;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        //BufferedWriter(Writer out)
+//        FileWriter fw = new FileWriter ("H:\\untitled4\\javase.txt");
+//        BufferedWriter bw = new BufferedWriter (fw);
+//        BufferedWriter bw = new BufferedWriter (new FileWriter ("H:\\untitled4\\javase.txt"));
+//        bw.write ("HELLO\r\n");
+//        bw.write ("world\r\n");
+//        bw.close ();
+
+//        BufferedReader(Reader in)
+        BufferedReader br = new BufferedReader (new FileReader ("H:\\untitled4\\javase.txt"));
+
+        //一次读一个字符数据
+//        int ch;
+//        while ((ch = br.read ())!=-1){
+//            System.out.print ((char)ch);
+//        };
+//        br.close ();
+        //一次读取一个字符数组数据
+        char[] chs = new char[1024];
+        int len;
+        while((len= br.read (chs))!=-1){
+            System.out.println (new String(chs,0,len));
+        }
+    }
+}
+```
+
+## 字符缓冲流特有功能
+
+BufferedWriter:
+
+- void newLine()：写一行行分隔符，行分隔符字符串由系统属性定义
+
+BufferedReader:
+
+- public String readLine()：读一行文字，结果包含行的内容字符串，不包括任何终止字符，如果流的结尾已经到达，则为NULL
+
+```java
+import java.io.*;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        //创建字符缓冲输出流
+//        BufferedWriter bw = new BufferedWriter (new FileWriter ("H:\\untitled4\\javase.txt"));
+//
+//        //写数据
+//        for (int i = 0;i<10;i++){
+//            bw.write ("hello"+i);
+////            bw.write ("\r\n");
+//            bw.newLine ();
+//            bw.flush ();
+//        }
+//
+//        bw.close ();
+
+        //创建字符输出流
+        BufferedReader br = new BufferedReader (new FileReader ("H:\\untitled4\\javase.txt"));
+
+        //public String readLine()：读一行文字，结果包含行的内容字符串，不包括任何终止字符，如果流的结尾已经到达，则为NULL
+
+        //第一次读取数据
+        String line = br.readLine ();
+        System.out.println (line);//hello 0
+
+        //第二次读取数据
+        line = br.readLine ();
+        System.out.println (line);// hello 1
+
+        String lines;
+        while((lines=br.readLine ())!=null){
+            System.out.print (lines);
+        }
+        br.close ();
+    }
+}
+```
+
+## 复制文件的异常处理 JDK7和JDK9和Try Catch
+
+```java
+import javax.imageio.IIOException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) {
+
+    }
+
+    //JDK9
+    private static void JDK9() throws IOException{
+        FileReader fr = new FileReader ("javase.txt");
+        FileWriter fw = new FileWriter ("javase.txt");
+        try(fr;fw){
+            char[] chs = new char[1024];
+            int len;
+            while((len=fr.read ())!=-1){
+                fw.write (chs,0,len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+        //不用写close，jdk7以后会自动释放资源
+    }
+    //JDK7
+    private static void JDK7(){
+        try(FileReader fr = new FileReader ("javase.txt");
+            FileWriter fw = new FileWriter ("javase.txt");){
+
+            char[] chs = new char[1024];
+            int len;
+            while((len=fr.read ())!=-1){
+                fw.write (chs,0,len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+        //不用写close，jdk7以后会自动释放资源
+    }
+
+    //try catch
+    private static void TRYCATCH(){
+        FileReader fr = null;
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter ("javase.txt");
+            fr = new FileReader ("javase.txt");
+
+            char[] chs = new char[1024];
+            int len;
+
+            while((len = fr.read ())!=-1){
+                fw.write (chs,0,len);
+            }
+
+        }catch (IOException e){
+            e.printStackTrace ();
+        }finally {
+            if(fw!=null){
+                try {
+                    fr.close ();
+                } catch (IOException e){
+                    e.printStackTrace ();
+                }
+
+            }
+            if(fr!=null){
+                try {
+                    fr.close ();
+                } catch (IOException e){
+                    e.printStackTrace ();
+                }
+            }
+        }
+    }
+}
+```
+
+# 特殊操作流
+
+## 标准输入
+
+System类中有两个静态的成员变量
+
+- public static final InputStream in：标准输入流。通常该流对应于键盘输入或由主机环境或用户指定的另一个输入源
+- public static final PrintStream ：标准输出流。通常该流对应于显示输出或由主机环境或用户指定的另一个输出目标
+
+自己实现键盘录入数据
+
+```java
+BufferedReader br = new BufferedReader (new InputStreamReader (System.in));
+```
+
+所以使用万能的Scanner
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        //public static final InputStream in：标准输入流。通常该流对应于键盘输入或由主机环境或用户指定的另一个输入源
+//        InputStream in = System.in;
+////        int by;
+////        while((by=in.read ())!=-1){
+////            System.out.println ((char)by);
+////        }
+//
+//        //如何把字节流转化为字符流
+//        InputStreamReader isr = new InputStreamReader (in);
+//
+//        //使用字符流实现一次读取一行数据
+//        //但是一次读取一行数据的方法是字符缓冲输入流的特有方法
+//        BufferedReader br =new BufferedReader (isr);
+
+        //合成为1步
+        BufferedReader br = new BufferedReader (new InputStreamReader (System.in));
+        System.out.println ("请输入一个字符串");
+        String s = br.readLine ();
+        System.out.println ("字符串是"+s);
+
+        System.out.println ("请输入一个数");
+        int i = Integer.parseInt (br.readLine ());
+        System.out.println ("您输入的整数是"+i);
+
+        //自己实现键盘录入数据太麻烦，所以有一个万能的Scanner
+        Scanner sc = new Scanner (System.in);
+
+    }
+}
+```
+
+## 标准输出流
+
+输出语句的本质，是一个标准的输出流
+
+- PrintStream ps = System.out
+
+- PrintStream类有的方法，System.out都能用
+
+- ```java
+  import java.io.PrintStream;
+  
+  public class Demo {
+      public static void main (String[] args) {
+          //public static final PrintStream out标准输出流
+          PrintStream ps = System.out;
+  
+          ps.println ("hello");
+          ps.println (100);
+  
+          //System.out本质是一个字节输出流
+          System.out.println ("hello");
+          System.out.println (100);
+      }
+  }
+  ```
+
+## 字节打印流
+
+- 打印流分为：
+
+  - 字节打印流：PrintStream
+  - 字符打印流：PrintWriter
+
+- 打印流的特点：
+
+  - 只负责输出数据，不负责读取数据
+  - 有自己的特殊方法
+
+- 字节打印流
+
+  - PrintStream(String fileName）：使用指定的文件名创建新的打印流
+  - 使用继承父类的方法写数据，查看的时候会转码；使用自己的特有方法写数据，查看的数据原样输出
+
+  ```java
+  import java.io.FileNotFoundException;
+  import java.io.PrintStream;
+  
+  public class Demo {
+      public static void main (String[] args) throws FileNotFoundException {
+          PrintStream ps = new PrintStream ("H:\\untitled4\\javase.txt");
+  
+          //写数据
+          ps.write (97);//a
+  
+          //特有方法写数据
+          ps.print(97);//97
+          ps.close ();
+      }
+  }
+  ```
+
+## 字符打印流
+
+字符打印流PrintWriter的构造方法：
+
+- PrintWriter（String fileName）使用指定的文件名创建一个新的PrintWriter，而不需要自动执行刷新
+- PrintWriter（Wirter out，boolean autoFlush）
+  - 创建一个新的PrintWriter
+  - out：字符输出流
+    - autoFlush：一个布尔值，如果为真，则为println,printf或者format方法将方法刷新输出缓冲区
+
+```java
+import java.io.*;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        PrintWriter pw = new PrintWriter ("H:\\untitled4\\java.txt");
+//        pw.print (1);
+//        pw.println (2);
+//        pw.flush ();
+
+        PrintWriter pw = new PrintWriter (new FileWriter ("H:\\untitled4\\java.txt"),true);
+        pw.println ("hello");
+        pw.println ("hello");
+        pw.println ("hello");
+        pw.close ();
+
+    }
+}
+```
+
+## 对象序列化流
+
+对象序列化：就是将对象保存到磁盘中，或者在网络中传输对象
+
+这种机制就是使用一个字节序列表示一个对象，该字节序列包括：对象的类型，对象的数据和对象中存储的属性等信息字节序列写到文件之后，相当于文件中持久保存了一个对象的信息。
+
+反之，该字节序列还可以从文件夹读取回来，重构对象，对它进行反序列化
+
+- 对象序列化流：ObjectOutputStream
+- 对象反序列化流：ObjectInputStream
+
+## ObjectOutputStream
+
+- 将Java对象的原始数据类型和图形写入OutputStream。可以使用ObjectInputStream读取（重构）对象。可以通过使用流的文件来实现对象的持久存储，如果对象
+
+- 构造方法
+
+  - OjbectOutputStream（OutputStream out）：创建一个写入指定的OutputStream的ObjectOutputStream
+
+- 序列化对象的方法
+
+  - void writeObject(Object obj)：将指定的对象写入ObjectOutputStream
+
+- 注意
+
+  - 一个对象想要被实例化，该对象所属的类必须实现Serializable接口
+  - Serializable是一个标记接口，不需要重写
+
+  ```java
+  import java.io.Serializable;
+  
+  public class Student implements Serializable {
+      private String name;
+      private int age;
+  
+      public Student (String name ,int age) {
+          this.name = name;
+          this.age = age;
+      }
+  
+      public String getName () {
+          return name;
+      }
+  
+      public void setName (String name) {
+          this.name = name;
+      }
+  
+      public int getAge () {
+          return age;
+      }
+  
+      public void setAge (int age) {
+          this.age = age;
+      }
+  }
+  
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.io.ObjectOutputStream;
+  
+  public class Demo {
+      public static void main (String[] args) throws IOException {
+          ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream ("H:\\untitled4\\javase.txt"));
+          Student s = new Student ("马牛逼",19);
+          oos.writeObject (s);
+          oos.close ();
+      }
+  }
+  
+  ```
+
+## ObjectInputStream
+
+对象反序列化流：ObjectInputStream
+
+- OjbectInputStream反序列化先前使用ObjectOutputStream编写的原始数据和对象
+
+构造方法：
+
+- ObjectInputStream（InputStream in）：创建从指定的InputStream读取的ObjectInputStream
+
+反序列化对象的方法：
+
+- Object readObject()：从ObjectInputStream读取一个对象
+
+```java
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+public class Demo  {
+    public static void main (String[] args) throws IOException, ClassNotFoundException {
+        //ObjectInputStream（InputStream in）：创建从指定的InputStream读取的ObjectInputStream
+        ObjectInputStream ois =new ObjectInputStream (new FileInputStream ("javase.txt"));
+        //Object readObject()：从ObjectInputStream读取一个对象
+        Object o = ois.readObject ();
+        Student s = (Student) o;
+
+        System.out.println (s.getName ()+","+s.getAge ());
+        ois.close ();
+
+    }
+}
+```
+
+## serivalVersionUID &  transient
+
+用对象序列化列化了一个对象后，假如修改了对象所属的类文件后。读取数据会出问题
+
+- 抛出InvalidClassException
+
+- 给对象所属的类加一个serialVersionUID
+  - private static final long serialVersionUID = 42L;
+
+如果对象中的某个值不想被序列化，
+
+- 给该成员变量加transient关键字修饰，该关键字标记的成员不会参与序列化过程
+
+## Properties作为Map集合的使用
+
+- 是一个Map体系的集合类
+
+- Properties可以保存到流中或者从流中加载
+
+  
+
+- Object setProperty(String key,String value) 设置集合的Key和Value，都是String类型，底层调用Hashtable方法 put
+- String getProperty(String key) 使用此属性列表中的Key搜索属性
+- Set<String> stringPropertyNames() 从该属性列表中返回一个不可修改的Key集，其中Key及其对应的值是字符串
+
+```java
+import java.util.Properties;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+        //创建集合对象
+        Properties prop = new Properties ();
+//        Object setProperty(String key,String value) 设置集合的Key和Value，都是String类型，底层调用Hashtable方法 put
+        prop.setProperty ("1","11");
+        prop.setProperty ("2","22");
+        prop.setProperty ("3","33");
+
+//        String getProperty(String key) 使用此属性列表中的Key搜索属性
+        System.out.println (prop.getProperty ("1"));
+
+//        Set<String> stringPropertyNames() 从该属性列表中返回一个不可修改的Key集，其中Key及其对应的值是字符串
+        Set<String> nums = prop.stringPropertyNames ();
+        for(String key : nums){
+//            System.out.println (key);获得key
+            String value = prop.getProperty (key);
+            System.out.println (value);//获得value
+        }
+
+    }
+}
+```
+
+## Properties和IO流结合方法
+
+- void load(InputStream inStream) 从输入字节流读取属性列表（Key和Value对）
+- void load(Reader reader) 从输入字符流读取属性列表（Key和Value对）
+- void store(OutputStream out,String comments) 将此属性列表（Key和Value对）写入此Properties表中，以适合于使用load（InputStream）方法的格式写入输出字节流。
+- void store(Writer writer,String comments) 将此属性列表（Key和Value对）写入此Properties标中，以适合使用load（Reader）方法的格式写入输出字符流
+
+```java
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        //把集合中的数据保存到文件
+        myStore();
+
+        //把文件中的数据加载到集合
+        myLoad();
+    }
+
+    private static void myLoad () throws IOException {
+        Properties prop = new Properties ();
+//        void load(Reader reader) 从输入字符流读取属性列表（Key和Value对）
+        FileReader fr = new FileReader ("javase.txt");
+        prop.load (fr);
+        fr.close ();
+
+        System.out.println (prop);
+    }
+    private static void myStore () throws IOException {
+        Properties prop = new Properties ();
+        prop.setProperty ("1","a");
+        prop.setProperty ("2","b");
+        prop.setProperty ("3","c");
+
+//        void store(Writer writer,String comments) 将此属性列表（Key和Value对）写入此Properties标中，以适合使用load（Reader）方法的格式写入输出字符流
+        FileWriter fw = new FileWriter ("javase.txt");
+        prop.store (fw,null);
+        fw.close ();
+    }
+}
+```
+
+# 实现多线程
+
+## 进程
+
+进程：是正在运行的程序
+
+- 是系统进行资源分配和调用的独立单位
+- 每一个进程都有它自己的内存空间和系统资源
+
+## 线程
+
+线程：是进程中的单个顺序控制流，是一条执行路径
+
+- 单线程：一个进程如果只有一条执行路径，则称为单线程程序
+- 多线程：一个进程如果有多条执行路径，则称为多线程程序
+
+## 多线程的实现方式
+
+方式1：继承Thread类
+
+- 定义一个MyThread继承Thread类
+- 在MyThread类中重写run方法
+- 创建MyThread类的对象
+- 启动线程
+
+两个问题
+
+- 为什么重写run方法
+  - 因为run（）是用来封装被线程执行的代码
+- run（）和start（）方式的区别
+  - run（）：封装线程执行的代码，直接调用，相当于普通方法的调用
+  - start（）：启动线程；由JVM调用此线程的Run方法
+
+```java
+public class MyThread extends Thread{
+    @Override
+    public void run () {
+        for(int i = 0;i <1000;i++){
+            System.out.println (i);
+        }
+    }
+}
+public class Demo {
+    public static void main (String[] args) {
+        MyThread mt1 = new MyThread ();
+        MyThread mt2 = new MyThread ();
+
+//        mt1.run ();
+//        mt2.run ();
+
+        //void start() 导致此线程开始执行，Java虚拟机调用此run方法
+        mt1.start ();
+        mt2.start ();
+    }
+}
+```
+
+## 设置和获取线程名称
+
+Thread类中设置和获取线程名称的方法
+
+- void setName（String name）：将此线程的名称更改为等于参数name
+- String getName（）：返回此线程的名称
+
+如果获取main（）方法所在的线程名称
+
+- public static Thread currentThread（）：返回对当前正在执行的线程对象的引用
+
+```java
+public class MyThread extends Thread{
+
+    public MyThread() {};
+
+    public MyThread(String name){//重写
+        super(name);
+    }
+    @Override
+    public void run () {
+        for(int i = 0;i <1000;i++){
+            System.out.println (getName()+":"+i);
+        }
+    }
+}
+public class Demo {
+    public static void main (String[] args) {
+//        MyThread mt1 = new MyThread ();
+//        MyThread mt2 = new MyThread ();
+//
+//        //void setName(String name)：将此线程的名称更改为等于参数name
+//        mt1.setName ("飞机");
+//        mt1.setName ("高铁");
+//        mt1.start ();
+//        mt2.start ();
+
+        //static Thread currentThread() 返回对当前正在执行的线程对象的引用
+        System.out.println (Thread.currentThread().getName ());//输出main，是main线程
+    }
+}
+```
+
+## 线程调度
+
+线程有两种调度模型
+
+- 分时调度模型：所有线程轮流使用CPU的使用权，平均分配每个线程占用CPU的时间片
+- 抢占式调度模型：优先让优先级高的线程使用CPU，如果线程的优先级相同，那么会随机选择一个，优先级高的线程获取的CPU时间片相对多一些
+
+Java使用的是抢占式调度模型
+
+假如计算机只有一个CPU，那么CPU在某一个时刻只能执行一条指令，线程只有得到CPU的时间片，也就是使用权，才可以执行命令。所以说多线程程序的执行是有随机性的，因为谁先抢到CPU的使用权是不一定的
+
+Thread类中设置和获取线程优先级方法
+
+- public final int getPriority() ：返回此线程的优先级
+- public final void setPrioity(int newPriorty) ：更改此线程的优先级
+
+线程默认优先级是5；线程优先级的范围是1-10；
+
+线程优先级高仅仅代表线程获取的CPU时间片的几率高，但是要在次数比较多，或者多次运行的时候才能看出来效果
+
+```java
+public class Demo {
+    public static void main (String[] args) {
+        MyThread mt1 = new MyThread ();
+        MyThread mt2 = new MyThread ();
+        MyThread mt3 = new MyThread ();
+
+        mt1.setName ("高铁");
+        mt2.setName ("飞机");
+        mt3.setName ("汽车");
+
+        //public final int getPriority() ：返回此线程的优先级
+//        System.out.println (mt1.getPriority ());//5
+//        System.out.println (mt2.getPriority ());//5
+//        System.out.println (mt3.getPriority ());//5
+        //线程默认优先级是5
+
+        //public final void setPrioity(int newPriorty) ：更改此线程的优先级
+//        mt1.setPriority (10000);异常
+//        System.out.println (Thread.MAX_PRIORITY);//默认是10
+//        System.out.println (Thread.MIN_PRIORITY);//默认是1
+//        System.out.println (Thread.NORM_PRIORITY);//默认是5
+
+        //设置正确的优先级
+        mt1.setPriority (5);
+        mt2.setPriority (10);
+        mt3.setPriority (1);
+
+        mt1.start ();
+        mt2.start ();
+        mt3.start ();
+    }
+}
+```
+
+## 线程控制
+
+static void sleep（long millis）使当前正在执行的线程停留（暂停执行）指定的毫秒数
+
+void join（）等待这个线程死亡
+
+void setDeamon（boolean on）将此线程标记为守护线程，当运行的线程都是守护线程时，Java虚拟机（JVM）将退出
+
+```java
+public class ThreadSleep extends Thread{
+    @Override
+    public void run () {
+        for( int i = 0;i<100;i++){
+            System.out.println (getName ()+","+i);
+            try {
+                Thread.sleep (1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+        }
+    }
+}
+
+public class ThreadSleepDemo {
+    public static void main (String[] args) {
+        ThreadSleep ts1 = new ThreadSleep ();
+        ThreadSleep ts2 = new ThreadSleep ();
+        ThreadSleep ts3 = new ThreadSleep ();
+
+        ts1.setName ("线程1");
+        ts2.setName ("线程2");
+        ts3.setName ("线程3");
+
+        ts1.start ();
+        ts2.start ();
+        ts3.start ();
+    }
+}
+
+public class ThreadJoinDemo {
+    public static void main (String[] args) {
+        ThreadJoin tj1 = new ThreadJoin ();
+        ThreadJoin tj2 = new ThreadJoin ();
+        ThreadJoin tj3 = new ThreadJoin ();
+
+        tj1.setName ("线程1");
+        tj2.setName ("线程2");
+        tj3.setName ("线程3");
+
+        tj1.start ();
+        try {
+            tj1.join ();
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        }
+        tj2.start ();
+        tj3.start ();
+    }
+}
+
+public class ThreadDeamonDemo{
+    public static void main (String[] args) {
+        ThreadDeamon td1 = new ThreadDeamon ();
+        ThreadDeamon td2 = new ThreadDeamon ();
+        ThreadDeamon td3 = new ThreadDeamon ();
+
+        td1.setName ("线程1");
+        td2.setName ("线程2");
+        td3.setName ("线程3");
+
+        //设置主线程为线程1
+        Thread.currentThread ().setName ("线程1");
+
+        //设置守护线程
+        td1.setDaemon (true);
+        td2.setDaemon (true);
+
+        td1.start ();
+        td2.start ();
+        td3.start ();
+
+        for(int i  = 0;i<10;i++){
+            System.out.println (Thread.currentThread ().getName ()+","+i);
+        }
+
+    }
+}
+
+```
+
+## 实现Runnable接口的方式
+
+- 定义一个类MyRunnable实现Runnable接口
+- 在MyRunnable类中重写run（）方法
+- 创建MyRunnable
+- 创建Thread类的对象，把MyRunnable对象作为构造方法的参数
+- 启动线程
+
+多线程的实现方案的两种
+
+- 继承Thread类
+- 实现Runnble接口
+
+相比继承Thread类，实现Runnable接口的好处
+
+- 避免了Java的单继承局限性
+- 适合多个相同程序的代码去处理同一个资源的情况，把线程和程序的代码，数据有效分离，较好的体现了面向对象的设计思想
+
+```java
+public class MyRunnable implements Runnable{
+
+    @Override
+    public void run () {
+        for(int i = 0;i<100;i++){
+            System.out.println (Thread.currentThread ().getName ()+"i"+i);
+            //不能直接用getName（）方法
+        }
+    }
+}
+
+public class Demo {
+    public static void main (String[] args) {
+        MyRunnable my = new MyRunnable ();
+
+        Thread t1 = new Thread (my,"线程1");
+        Thread t2 = new Thread (my,"线程2");
+
+        t1.start ();
+        t2.start ();
+    }
+}
+
+```
+
+## 同步代码块
+
+锁多条语句操作共享数据，可以通过使用同步代码块实现
+
+格式
+
+synchronized（任意对象）{
+
+​		多条语句操作共享数据的代码
+
+}
+
+- 好处：解决了多线程的数据安全问题
+- 弊端：线程很多的时候，效率降低。耗费资源
+
+```java
+public class SellTicket implements Runnable{
+    private int ticket = 100;
+    private Object obj = new Object ();
+
+    @Override
+    public void run () {
+        while(true) {
+            try {
+                Thread.sleep (100);
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+            synchronized (obj) {
+                if (ticket > 0){
+                    System.out.println (Thread.currentThread ().getName () + "正在出售第" + ticket + "张票");
+                    ticket--;
+                }
+            }
+        }
+    }
+}
+
+public class SellTicketDemo {
+    public static void main (String[] args) {
+        SellTicket st = new SellTicket ();
+        Thread t1 = new Thread (st,"窗口1");
+        Thread t2 = new Thread (st,"窗口2");
+        Thread t3 = new Thread (st,"窗口3");
+        t1.start ();
+        t2.start ();
+        t3.start ();
+    }
+}
+
+```
+
+## 同步方法
+
+同步方法就是把synchronized加到方法上
+
+- 格式：
+
+修饰符synchronized返回值类型 方法名 （方法参数）{  }
+
+```java
+private void sellTicket () {
+    try {
+        Thread.sleep (100);
+    } catch (InterruptedException e) {
+        e.printStackTrace ();
+    }
+    synchronized (obj) {
+        if (ticket > 0){
+            System.out.println (Thread.currentThread ().getName () + "正在出售第" + ticket + "张票");
+            ticket--;
+        }
+    }
+}
+```
+
+## 线程安全的类
+
+StringBuffer
+
+- 线程安全，可变的字符序列
+- 从JDK5开始，被StringBuffer替代，通常应该使用StringBuffer类，因为它支持所有相同的操作。但是它更快，因为它不执行同步
+
+Vector
+
+- 从Java 2 平台v1.2开始，该类改进了List接口，使其成为Java Collections Framework成员。与新的集合实现不同，Vector被同步。如果不需要线程安全的实现，建议用ArrayList代替Vector
+
+Hashtable
+
+- 该类实现了一个哈希表，它将Key映射到Value，任何非null的对象都可以用作key和value。
+- 从Java2平台v1.2开始，该类进行了改进，实现了Map接口，使其成为JavaJava Collections Framework成员。与新的集合实现不同，Hashtable被同步如果不需要线程安全的实现，建议用HashMap代替HashTable
+
+```java
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Vector;
+
+public class Demo {
+    public static void main (String[] args) {
+        StringBuffer sb1 = new StringBuffer ();
+        StringBuilder sb2 = new StringBuilder ();
+
+        Vector<String>v = new Vector<String> ();
+        ArrayList<String> array = new ArrayList<String> ();
+
+        Hashtable<String,String> ht = new Hashtable<String ,String> ();
+        HashMap<String,String> hm = new HashMap<String ,String> ();
+
+        
+    }
+}
+
+Ctrl+b 看源代码
+```
+
+## 生产者消费者模式
+
+一个多线程协作的经典模式。
+
+包含了两类线程
+
+- 一类是生产者线程用于生产数据
+- 一类是消费者线程用于消费数据
+
+为了解耦生产者和消费者的关系，通常会采用共享的数据区域，就像一个仓库
+
+- 生产者生产数据之后直接放到共享数据区域内，并不需要关系消费者的行为
+- 消费者只需要从共享数据区中获取数据，并不需要关系生产者的行为
+
+为了体现过程中的等待和唤醒，Java提供了几个方法，在Object类中
+
+- void wait() 导致当前线程等待，直到另一个线程调用该对象的notify()或者notifyAll()方法
+- void notify() 唤醒正在等待对象监视器的单个线程
+- void notyfyAll() 唤醒正在等待对象监视器的所有线程
+
+```java
+public class Producer implements Runnable{
+
+    private Box b;
+
+    public Producer(Box b){
+        this.b=b;
+    }
+
+    @Override
+    public void run () {
+        for(int i = 1 ; i<= 5;i++){
+            b.put (i);
+        }
+    }
+}
+
+public class Customer implements Runnable {
+
+    private Box b;
+    public Customer (Box b) {
+        this.b=b;
+    }
+
+    @Override
+    public void run () {
+        while (true){
+            b.get ();
+        }
+    }
+}
+
+
+public class Box {
+
+    private int milk;
+
+    private boolean state = false;
+
+    public synchronized void put(int milk){
+
+        if(state=true){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+        }
+
+        this.milk = milk;
+        System.out.println ("快递小哥将"+this.milk+"瓶放入箱子");
+
+        state=true;
+
+        notifyAll ();//唤醒其它线程
+    }
+
+    public synchronized void get(){
+        if(!state) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+        }
+        System.out.println ("用户拿到第"+this.milk+"瓶奶");
+
+        state = false;
+
+        notifyAll ();//唤醒其它线程
+    }
+}
+
+public class BoxDemo {
+    public static void main (String[] args) {
+        Box b = new Box ();
+
+        Producer p = new Producer (b);
+
+        Customer c = new Customer (b);
+
+        Thread t1 = new Thread (p);
+        Thread t2 = new Thread (c);
+
+        t1.start ();
+        t2.start ();
+
+    }
+}
+
+```
+
+# 网络编程
+
+## 概述
+
+计算机网络
+
+- 是指将地理位置不同的具有独立功能的多台计算机及其外部设备，通过通信线路链接起来，在网络操作系统，网络管理软件及其网络通信协议的管理和协商下，实现资源共享和传递的计算机系统。
+
+网络编程
+
+- 在网络通信协议下，实现网络互连的不同计算机上运行的程序间可以进行数据交换
+
+## 网络编程三要素
+
+IP地址
+
+- 让计算机互相通信，要为每台计算机指定一个标识号，这个标识号就是IP
+
+端口
+
+- 每台计算机有很多程序，在网络通讯的时候，端口号是唯一表示设备中的应用程序了，也就是程序的标识
+
+协议
+
+- 通过计算机网络可以使用多台计算机链接，位于一个网络计算机在进行链接和通信时需要遵守的约定，这些通信这链接被称为网络通信协议，它对数据的传输格式，传输速率，传输步骤做了一定的规定。通信双方必须遵守才能完成数据交换，常见的协议有UDP协议和TCP协议
+
+
+
+## IP地址
+
+IP：网络中设备的唯一识别
+
+IP地址分为两大类
+
+- IPV4：是给每个链接在网络上的主机分配一个32bit地址，按照TCP / IP规定。IP地址用二进制来表示，每个IP地址长32bit，也就是4字节，二进制ip太sb了，所以IP地址经常被写成10进制，中间用“.”分割，上面地址可以表示为192.168.1.66. IP地址的这种表示方法叫 点分十进制表示法。
+- IPV6：由于IP需求量越来越多（互联网发展太快），但是网络地址资源有限，为了扩张地址空间。通过IPv6重新定义地址空间，采用128位地址长度，每16个字节一组，分成8组十六进制数，这样就解决了网络地址资源不够的问题
+
+## 常用命令
+
+- ipconfig：查看本机ip
+- ping IP地址：检查网络是否联通
+
+## 特殊IP地址
+
+- 127.0.0.1：是回送地址，可以代表本机地址，一般用来测试
+
+## InetAddress使用
+
+Java提供了一个类InetAddress对IP地址的获取和操作
+
+InetAddress：此类表示Internet协议（IP）地址
+
+- static InetAddress getByName(String host)：确定主机名称的IP地址，主机名称可以是机器名称，也可以是IP地址
+- String getHostName() ：获取该IP地址的主机名
+- String getHostAddress()：返回文本显示中的IP地址字符串
+
+```java
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class Demo {
+    public static void main (String[] args) throws UnknownHostException {
+        //static InetAddress getByName(String host)：确定主机名称的IP地址，主机名称可以是机器名称，也可以是IP地址
+        InetAddress address = InetAddress.getByName ("192.168.1.66");
+        //- String getHostName() ：获取该IP地址的主机名
+        String name = address.getHostName ();
+        // - String getHostAddress()：返回文本显示中的IP地址字符串
+        String ip = address.getHostAddress ();
+        System.out.println (name+","+ip);
+    }
+}
+```
+
+# 协议
+
+## TCP协议
+
+- 传输控制协议（Transmission Control Protocol）
+- TCP协议是面向连接的通信协议，即传输数据前，在发送端和接收端建立逻辑连接，然后再传输数据。它提供了两台计算机之间可靠无差错的数据传输，在TCP连接中必须要明确客户端和服务器端，由客户端向服务器端发出连接请求，每次连接的创建需要经过“三次握手”
+- 三次握手：TCP协议中，在发送数据的准备阶段，客户端与服务器之间的三次交互，以保证连接的可靠
+  - 第一次握手：客户端向服务器端发出连接请求，等待服务器确认
+  - 第二次握手：服务器向客户端回送一个响应，通知客户端收到了连接请求
+  - 第三次握手：客户端再次向服务器端发送确认信息，确认连接
+- 完成三次握手，建立连接后，客户端和服务器端可以进行数据传输，由于这种面向连接的特性。TCP协议可以保证传输数据的安全，所以应用广泛：上传文件，下载文件，浏览网页等
+
+## UDP通信原理
+
+UDP协议是一种不可靠的网络协议，它在通信的两端各建立一个Socket对象，但是这两个Socket对象只是发送，接收数据的对象
+
+因此，对于基于UDP协议通信双方而言，没有所谓的客户端和服务器的概念
+
+Java提供了DatagramSocket类作为基于UDP协议的Socket
+
+## UDP发送数据
+
+发送数据的步骤
+
+1.创建发送端Socket对象（DatagramSocket）
+
+DatagramSocet（）
+
+2.创建数据并且打包
+
+DatagramPacket（byte[] buf,int length,InetAddress adress , int port）
+
+3.调用DatagramSocket的方法发送数据
+
+void sent(DatagramPacket dp)
+
+4.关闭发送端
+
+void close()
+
+```java
+import java.io.IOException;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        DatagramSocket ds = new DatagramSocket ();
+
+        byte[] bys = "hello,udp我是你爹".getBytes();
+//        int length = bys.length;
+//        InetAddress address = InetAddress.getByName ("192.168.1.66");
+//        int port = 10086;
+//        DatagramPacket dp = new DatagramPacket (bys,length,address,port);
+        DatagramPacket dp = new DatagramPacket (bys,bys.length,InetAddress.getByName ("192.168.1.66"),10086);
+        ds.send (dp);
+        ds.close ();
+    }
+}
+```
+
+## UDP接收数据
+
+1.创建接收端的Socket对象（DatagramSocket）
+
+DatagramSocket（int port）
+
+2.创建一个数据包，用于接收数据
+
+DatagramPacket（byte[] buf ,int length）
+
+3.调用DatagramSocket对象的方法接收数据
+
+void receive (DatagramPacket p)
+
+4.解析数据包
+
+byte[] getData()
+
+int getLength()
+
+5.关闭接收端
+
+void close()
+
+```java
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        DatagramSocket ds = new DatagramSocket (10086);
+
+        byte[] bys = new byte[1024];
+        DatagramPacket dp = new DatagramPacket (bys,bys.length);
+
+        ds.receive (dp);
+
+//        byte[] data = dp.getData ();
+//        String dateString = new String (data);
+//        System.out.println ("数据是"+dateString);
+        System.out.println ("数据是:"+new String(dp.getData (),0,dp.getLength ()));
+
+        ds.close ();
+    }
+}
+```
+
+## TCP发送数据
+
+TCP通信协议是一种可靠的网络协议，它在通信的两端各建立一个Socket对象，从而在通信的两端形成网络虚拟链路， 一旦建立了虚拟的网络链路，两端的程序就可以通过虚拟链路进行通信。
+
+Java对基于TCP协议的网络提供了封装，使用Socket对象来代表两端的通信接口，并通过Socket产生IO流来进行网络通信
+
+Java为客户端提供了Socket类，为服务器端提供了ServerSocket类
+
+发送数据步骤
+
+1.创建客户端的Socket对象
+
+2.获取输出流，写数据
+
+3.释放资源
+
+```java
+package MyPackets;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        Socket s = new Socket (InetAddress.getByName ("192.168.1.66"),10000);
+        Socket s = new Socket ("192.168.1.66",10000);
+
+        //获取输出流，写数据
+        OutputStream os = s.getOutputStream ();
+        os.write ("TCP我来了".getBytes ());
+        s.close ();
+    }
+}
+```
+
+## TCP接收数据
+
+```java
+package MyPackets;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        ServerSocket ss = new ServerSocket (10000);
+
+        Socket s = ss.accept ();
+
+        InputStream is = s.getInputStream ();
+
+        byte[] bys = new byte[1024];
+
+        int len = is.read (bys);
+
+        String date = new String (bys,0,len);
+
+        System.out.println ("数据是"+date);
+
+        s.close ();
+        ss.close ();
+
+
+    }
+}
+```
 
