@@ -1873,3 +1873,935 @@ Java API ： 指的是JDK中提供的各种功能的JAVA类
       }
   }
   ```
+   ```java
+  public class StudentDemo {
+      public static void main(String[] args) {
+          //第一种方式
+          Student s1 = new Student();
+          s1.setName("马牛逼");
+          s1.setAge(19);
+          s1.show();
+          //第二种方式
+          Student s2 = new Student("马牛逼",20);
+          s2.show();
+      }
+  }
+  ```
+
+# String类
+
+## String类
+
+String 类 在java.lang包下，所以不用导包
+
+String 类代表字符串，Java程序中所有的文字例如"abc"都被实现为此类的实例
+
+也就是说：Java程序所有""双引号字符串，都是String类的对象。
+
+- 字符串的特点
+  - 字符串不可以改版，它们的值在创建后不能被更改（C++万岁）
+  - 虽然String值不可以被改变，但是它们可以被共享
+  - 字符串效果上相当于 字符数组char[]，但是底层原理是 字节数组byte[]
+  - JDK8及以前是字符数组，JDK9以后是字节数组。
+
+## String的构造方法和特点
+
+常用的构造方法，推荐使用第四种方法，直接赋值的方式。
+
+```java
+public String() 创建一个空白字符串对象，没有内容
+public String(char[] chs) 根据char数组（字符数组）的内容，创建字符串对象
+public String(byte[] bys) 根据byte数组（字节数组）的内容，创建字符串对象
+String s = "马牛逼"; 直接赋值的方式创建字符串对象，内容是 马牛逼
+public class StringDemo {
+    public static void main(String[] args) {
+        ////public String() 创建一个空白字符串对象，没有内容
+        String s1 = new String();
+        System.out.println("s1:"+s1);
+        //public String(char[] chs) 根据char数组（字符数组）的内容，创建字符串对象
+        char[] chs = {'a','b','c'};
+        String s2 = new String(chs);
+        System.out.println("s2:"+s2);
+        //public String(byte[] bys) 根据byte数组（字节数组）的内容，创建字符串对象
+        byte[] bys = {'a','b','c'};
+        String s3 = new String(bys);
+        System.out.println("s3:"+s3);
+        //String s = "马牛逼"; 直接赋值的方式创建字符串对象，内容是 马牛逼
+        String s4 = "马牛逼";
+        System.out.println("s4:"+s4);
+    }
+}
+```
+
+- String 对象的特点
+
+  - 1，通过new创建字符串对象，每次new都会申请一个内存空间，虽然内存相同，但是地址不同。
+
+  ```java
+  char[] chs = {'a','b','c'};
+  String s1 = new String(chs);
+  String s2 = new String(chs);
+  ```
+
+  上面的代码中，JVM会先创建一个char数组，每一次new都会有一个新的address，地址，只不过s1和s2的内容是相同，但是地址不同。
+
+  - 2，以” “方式创建字符串，只要字符串顺序相同（大小写也是），无论在程序代码中出现几次，JVM都只会建立一个String对象，并在字符串池中维护。
+
+  ```java
+  String s3 = "马牛逼";
+  String s4 = "马牛逼";
+  ```
+
+  - 3，在上面代码中，针对第一行代码，JVM会建立一个String对象放在字符串池中，并给s3参考，第二行让s4直接参考字符串池中的String对象，也就是说，它们本质上是一个对象
+
+## 字符串的比较equals()
+
+- 使用 == 做比较
+  - 基本类型：比较的是 数据值 是否相同
+  - 引用类型：比较的是 地址值 是否相同
+- 字符串是对象，它比较的内容是否相同，是通过一个方法来实现，这个方法叫equals()
+  - public boolean equals(Obejct anObject)
+    - 将此字符串与指定对象相比较，由于比较的字符串是对象，所以参数直接传递一个字符串。
+
+```java
+public class StringDemo {
+    public static void main(String[] args) {
+        //构造方法
+        char[] chs = {'马','牛','B'};
+        String s1 = new String(chs);
+        String s2 = new String(chs);
+        //赋值方法
+        String s3 = "马牛B";
+        String s4 = "马牛B";
+        //比较字符串对象地址是否相同
+        System.out.println(s1 == s2);//地址不同
+        System.out.println(s1 == s3);//地址不同
+        System.out.println(s3 == s4);//字符串相同
+        System.out.println("----------");
+        //比较字符串内容是否相同
+        System.out.println(s1.equals(s2));//相同
+        System.out.println(s1.equals(s3));//相同
+        System.out.println(s3.equals(s4));//相同
+    }
+}
+```
+
+## StringBuilder定义和构造
+
+StringBuilder是一个可变化的字符串类，可以看成是一个容器
+
+- 可变是指StringBuilder中对象内容是可变的
+
+String和StringBuilder的区别
+
+- String，内容不可变
+- StringBuilder，内容可变
+- 4种构造方法，重点讲第一种和第四种。
+
+```java
+StringBuilder()
+```
+
+构造一个字符串构建器，其中不包含任何字符，初始容量为16个字符。
+
+```java
+StringBuilder(int capacity)
+```
+
+构造一个字符串构建器，其中没有字符，并且具有 `capacity`参数指定的初始容量。
+
+```java
+StringBuilder(CharSequence seq)
+```
+
+构造一个字符串构建器，其中包含与指定的 `CharSequence`相同的字符。
+
+```java
+StringBuilder(String str)
+```
+
+构造一个初始化为指定字符串内容的字符串构建器。
+
+例子：
+
+```java
+public class StringDemo {
+    public static void main(String[] args) {
+        //第一种方式 空构造
+        //StringBuilder()
+        StringBuilder sb = new StringBuilder();
+        System.out.println("马牛逼");
+        System.out.println(sb.length());
+        //StringBuilder(String str)
+        StringBuilder sb2 = new StringBuilder("hello");
+        System.out.println(sb2);
+        System.out.println(sb2.length());
+
+    }
+}
+```
+
+## StringBuilder添加和反转
+
+1.StringBuilder 转换为 String
+
+- public String toSring(); 通过toString()就可以把StringBuilder转换成String
+
+2.String转换为 StringBuilder
+
+- public StringBuilder(String s); 就可以把String转换为StringBuilderS
+
+```java
+public class StringDemo {
+    public static void main(String[] args) {
+        //StringBuilder转换为String
+        StringBuilder sb = new StringBuilder();
+        sb.append("sb");
+        String s = sb.toString();
+        System.out.println(s);
+        //String转换为StringBuilder
+        String s1 = new String();
+        s1 = "啊这";
+        StringBuilder sb1 = new StringBuilder();
+        sb = new StringBuilder(s1);
+        System.out.println(sb);
+    }
+}
+```
+
+# ArrayList
+
+## ArrayList概述
+
+- 编程的时候，如果存储多个数据，使用长度固定的数组储存格式，满足要求，因此用集合
+- 集合类的特点：提供一种存储空间可变的模型，存储的数据容量是可以发生改变的
+- 集合类有很多，ArrayList是其中之一
+
+```java
+ArrayList<E>:
+
+- 可调整大小的数组实现
+- <E>是一种泛型的数据类型
+
+使用:
+
+- 在出现E的地方引用数据类型转换即可
+- ArrayList<String>,ArrayList<Student>
+```
+
+## ArrayList构造和添加
+
+```java
+导包
+import java.util.ArrayList;
+构造
+public ArrayList() 创建一个空的ArrayList对象
+添加
+public boolean End(E e)将指定元素追加到此集合的末尾
+public void add(int index,E element)在此集合中的指定位置插入指定的元素
+
+注意，不能索引值越界！！！！！！！！！！！！！！！！！！！！！！！！！！
+```
+
+```java
+import java.util.ArrayList;
+
+public class ArrayListDemo{
+    public static void main(String[] args){
+        //public ArrayList() 创建一个空的ArrayList对象
+        ArrayList<String>arrayList = new ArrayList<>();
+
+        //public boolean End(E e)将指定元素追加到此集合的末尾
+        arrayList.add("hello");
+        arrayList.add("world");
+        arrayList.add("java");
+
+        //public void add(int index,E element)在此集合中的指定位置插入指定的元素
+        arrayList.add(1,"C++");
+        arrayList.add(3,"Python");
+        System.out.println(arrayList);
+    }
+}
+```
+
+## ArrayList集合常用方法
+
+```java
+public boolean remove(Object o)删除指定元素，返回知否删除成功
+public E remove(int dex)删除指定索引处的元素，返回被删除的元素
+public E set(int index,E element)修改指定索引处的元素，返回被修改的元素
+public E get(int index)返回指定索引处的元素
+public int size()返回集合中的元素个数
+import java.util.ArrayList;
+
+public class ArrayListDemo{
+    public static void main(String[] args){
+        ArrayList<String>arrayList = new ArrayList<>();
+        arrayList.add("hello");
+        arrayList.add("world");
+        arrayList.add("java");
+
+        //arrayList.remove("java");
+        //arrayList.remove(2);
+        //arrayList.set(2,"C++");
+        //System.out.println(arrayList.get(2));
+        System.out.println(arrayList.size());
+        System.out.println(arrayList);
+    }
+}
+```
+
+# 继承extends
+
+## 继承
+
+继承是面向对象三大特性之一，可以使得子类具有父类的属性和方法，还可以在子类重新定义，追加属性和方法。
+
+```java
+继承的格式
+public class 子类名 extends 父类名()
+例如
+public class Son extends Dad
+```
+
+Dad:是父类，也是基类，超类
+
+Son:是子类，也是派生类
+
+```java
+public class Dad{
+    public void show(){
+        System.out.println("show方法被调用");
+    }
+}
+
+public class Son extends Dad{
+    public void method(){
+        System.out.println("method被调用");
+    }
+}
+
+public class demo{
+    public static void main(String[] args){
+        Dad dad = new Dad();
+        dad.show();
+        Son son = new Son();
+        son.method();
+        son.show();
+    }
+}
+```
+
+## extends的好处和弊端
+
+继承是面向对象三大特性之一，可以使得子类具有父类的属性和方法，还可以在子类重新定义，追加属性和方法。
+
+继承的好处
+
+- 提高了代码的复用性（多个类相同的成员可以放在一个类中）
+- 提高了代码的维护性（如果method的代码被修改，修改一处即可）
+
+继承的弊端
+
+- 继承让类和类之间产生关系，类的耦合性变强，当父类发生变化的时候，子类的实现也得跟着变化，削弱了子类的独立性
+
+什么时候用继承？
+
+- 体现继承的关系：is a，做游戏小怪。
+- 假设法：有类A和B，如果它们满足A或者B的一种，或者B是A的一种，就说明它们存在继承关系，就可以考虑用继承来体验，否则不要滥用继承。
+- 举例：苹果和水果，猫和动物，猫和狗
+
+## extends中变量访问特点
+
+在子类方法中寻找一个变量
+
+- 先在子类局部范围内找
+- 如果没有，则去子类成员范围内找
+- 如果没有，则去父类成员范围内找
+- 如果都没有，即报错（不考虑父亲的父亲= =）
+
+## super
+
+super关键字用法和this关键字的用法相似
+
+- this代表本类的对象引用
+- super代表父类储存空间的表示（理解为父类对象引用）
+- 也可以使用this(……)访问本类的构造，this.成员方法(……)
+- 或者super(……）访问父类的构造，this.父类方法(……）
+
+```java
+public class Dad {
+    public int age = 20;
+}
+
+public class Son extends Dad{
+    public int age = 40;
+
+    public void show(){
+        int age = 30;
+        System.out.println(age);//30
+        //要访问成员变量，也就是40
+        System.out.println(this.age);//40
+        //要访问父类的，也就是20
+        System.out.println(super.age);
+    }
+}
+
+public class Demo {
+    public static void main(String[] args) {
+        Son s = new Son();
+        s.show();
+    }
+}
+```
+
+## extends中构造方法的访问特点
+
+子类中所有的构造方法都会访问父类中无参的构造方法
+
+- 因为子类会继承父类中的数据，可能还会使用父类中的数据，因此，子类初始化前，一定要先完成父类的初始化。
+- 每一个子类构造方法的第一条语句默认都是：super()
+
+如果父类中没有无参构造方法，只有带参构造方法，该怎么办呢？
+
+- 通过使用super()关键字去调用父类的带参构造方法
+- 在父类自己提供一个无参构造
+- 推荐自己写一个无参
+
+```java
+public class Dad{
+    public Dad(){
+        System.out.println("DAD类无参构造被调用");
+    }
+    public Dad(int age){
+        System.out.println("DAD类有参构造被调用");
+    }
+}
+```
+
+```java
+public class Son extends Dad{
+
+    public Son(){
+//				super();
+        System.out.println("Son类无参构造被调用");
+    }
+    public Son(int age){
+//				super();
+        System.out.println("Son类带参构造被调用");
+    }
+}
+```
+
+```java
+public class demo{
+    public static void main(String[] args){
+        Son s = new Son();
+        Son s1 = new Son(20);
+    }
+}
+```
+
+## extends中成员method的访问特点
+
+通过子类对象访问一个Method
+
+- 先在子类成员范围内找
+- 其次在父类成员范围内找
+- 都找不到就报错（不考虑父亲的父亲）
+
+```java
+public class Dad{
+    public void show(){
+        System.out.println("Dad类的show（）方法被调用");
+    }
+}
+```
+
+```java
+public class Son extends Dad{
+    public void method(){
+        System.out.println("Son中的method（）方法被调用");
+    }
+
+    public void show(){
+        //super.show();
+        System.out.println("Son类的show（）方法被调用");
+    }
+}
+```
+
+```java
+public class demo{
+    public static void main(String[] args){
+        Son s = new Son();
+        s.method();
+        s.show();
+    }
+}
+```
+
+## 方法重写
+
+方法重写概述
+
+- 子类中出现了和父类中一模一样的Method声明
+
+方法重写的应用
+
+- 当子类中需要父类的功能，而功能主题子类有自己特有的内容时，可以重写父类中的方法，这样，既沿袭了父类的功能，又定义了子类的内容
+
+注意事项！
+
+- 私有private的method不能被重写（父类的私有成员子类是不能继承的）
+- 子类访问私有权限不能更低（public>默认>私有）
+
+```java
+@Override
+```
+
+- 是一个注解
+- 可以帮助检查重写方法的方法声明和正确性
+
+```java
+public class Phone{
+    public void call(String name){
+        System.out.println("给" + name + "打电话");
+    }
+}
+```
+
+```java
+public class NewPhone extends Phone{
+
+		//@Override，如果报错，就是错，没错就是重写的没错。
+    public void call(String name){
+        System.out.println("开启视频功能");
+        //System.out.println("给" + name + "打电话");
+        super.call(name);
+    }
+}
+```
+
+```java
+public class PhoneDemo{
+    public static void main(String[] args){
+        Phone p = new Phone();
+        p.call("马牛逼");
+
+        System.out.println("---------");
+
+        NewPhone np = new NewPhone();
+        np.call("曹县666");
+    }
+}
+```
+
+## 继承的注意事项
+
+- Java中，类只支持单继承，不支持多继承
+- Java中，类支持等层继承
+
+```java
+public class GrandDad{
+    public void drink(){
+        System.out.println("爷爷爱喝酒");
+    }
+}
+```
+
+```java
+public class Mom{
+    public void hair(){
+        System.out.println("妈妈爱烫头");
+    }
+}
+```
+
+```java
+public class Dad extends GrandDad{
+    public void Smoke(){
+        System.out.println("爸爸爱抽烟");
+    }
+}
+```
+
+```java
+//public class Son extends Dad,Mom{}
+//错误的，java中不能同时继承多个类
+
+public class Son extends Dad{
+
+}
+```
+
+# 修饰符
+
+## package的概述和作用
+
+package其实就是文件夹
+
+- 作用：对类进行分类管理
+
+包的定义格式
+
+- 格式：package 包名;（多级包用.分开）
+- 例如：package com.CaoXian;
+
+带包的Java类编译和执行
+
+- 手动建包
+  - 按照cmd编译java文件===javac HelloWorld.java
+  - 手动创建package，在磁盘建立文件夹com，然后在com下建立文件夹CaoXian
+  - 把class放到包的最里面===把HelloWorld.class放到CaoXian这个文件夹下
+  - 带包执行，java com.CaoXian.HelloWorld
+- 自动建包
+  - javac -d . [HelloWorld.java](http://HelloWorld.java)
+  - java com.CaoXian.HelloWorld
+
+## import导包
+
+使用不同包下的类，使用的时候要写类的全路径，写起来太麻烦了
+
+为了简化带包的操作，Java就提供了导报的功能
+
+导包的格式
+
+```java
+格式 import 包名;
+例如 importcn.itcast.Teacher
+在文件最上方
+
+又或者
+
+文件夹cn.itcast下的Teacher.java
+那么应该
+cn.itcast.Teacher t = new cn.itcast.Teachaer();
+cn.itcast.Teacher t1 = new cn.itcast.Teachaer();
+
+又或者
+
+java.util.Scanner sc = new java.util.Scanner(System.in);
+```
+
+## 权限修饰符
+
+Java语言提供了很多修饰符，主要分为以下两类：
+
+- 访问修饰符
+- 非访问修饰符
+
+修饰符用来定义类、方法或者变量，通常放在语句的最前端。我们通过下面的例子来说明：
+
+```java
+public class ClassName {
+   // ...
+}
+private boolean myFlag;
+static final double weeks = 9.5;
+protected static final int BOXWIDTH = 42;
+public static void main(String[] arguments) {
+   // 方法体
+}
+```
+
+------
+
+## 访问控制修饰符
+
+Java中，可以使用访问控制符来保护对类、变量、方法和构造方法的访问。Java 支持 4 种不同的访问权限。
+
+- **default** (即默认，什么也不写）: 在同一包内可见，不使用任何修饰符。使用对象：类、接口、变量、方法。
+- **private** : 在同一类内可见。使用对象：变量、方法。 **注意：不能修饰类（外部类）**
+- **public** : 对所有类可见。使用对象：类、接口、变量、方法
+- **protected** : 对同一包内的类和所有子类可见。使用对象：变量、方法。 **注意：不能修饰类（外部类）**。
+
+## Final
+
+- Final（最终态）
+- static（静态）
+
+final 表示"最后的、最终的"含义，变量一旦赋值后，不能被重新赋值。被 final 修饰的实例变量必须显式指定初始值。
+
+final 修饰符通常和 static 修饰符一起使用来创建类常量。
+
+final的修饰特点
+
+- 修饰方法method，表示该方法是最终的方法，不能被重写
+- 修饰变量，表面该变量是最终的常量，不能被再次赋值
+- 修饰类，表面该类是最终类，不能被继承
+
+## Final修饰局部变量
+
+- 变量是基本类型：fina修饰指的是基本类型的数据值不能发生改变
+- 变量是引用类型：final修饰指的是引用类型的地址值不能发生改变，但是地址里面的内容是可以改变的
+
+```java
+public class Student{
+    public int age =30;
+}
+
+public class FinalDemo{
+    public static void main(String[] args){
+        //final修饰变量基本类型
+        final int age = 20;
+        //age = 100;
+        System.out.println(age);
+
+        //final修饰引用类型
+        final Student s = new Student();
+        s.age=100;
+        System.out.println(s.age);
+
+        //s = new Student();
+    }
+}
+```
+
+## Static
+
+static 关键字是静态的意思，可以修饰成员方法，成员变量
+
+static 修饰的特点
+
+- 被类的所有对象共享
+  - 这也是我们判断是否使用静态关键字的条件
+- 可以通过类名调用
+  - 当然，也可以通过对象名调用
+  - 推荐类名调用
+
+```java
+public class Student{
+    public int age;
+    public String name;
+    //public String school;
+    public static String school;
+    public void show(){
+        System.out.println(name+school+age);
+    }
+}
+
+public class StudentDemo{
+    public static void main(String[] args){
+        //高手的写法
+        Student.school = "nycct";
+        Student s = new Student();
+        s.name = "马牛逼";
+        s.age = 20;
+        //s.school = "Nycct";
+        s.show();
+
+        Student s2 = new Student();
+        s2.name = "二次元";
+        s2.age = 19;
+        //s2.school = "nycct";
+        s2.show();
+    }
+}
+```
+
+## Static访问特点
+
+非静态的成员访问
+
+- 能访问静态的成员变量
+- 能访问非静态的成员变量
+- 能访问静态的成员方法
+- 能访问非静态的成员方法
+
+静态的成员访问
+
+- 能访问静态的成员变量
+- 能访问静态的成员方法
+
+总结一句话：静态成员方法只能访问静态成员
+
+```java
+public class Student{
+    //非静态成员变量
+    private String name = "马牛逼";
+    //静态成员变量
+    private static int age = 20;
+
+    //非静态成员方法
+    public void show1(){
+
+    }
+
+    //非静态成员方法
+    public void show2(){
+        System.out.println(name);
+        System.out.println(age);
+        show1();
+        show3();
+    }
+
+    //静态成员方法
+    public static void show3(){
+
+    }
+
+    //静态成员方法
+    public static void show4(){
+        //System.out.println(name);
+        System.out.println(age);
+        //show1();
+        show3();
+    }
+}
+```
+
+# 多态
+
+## 多态
+
+同一个对象，在不同时刻表现出来不同时态
+
+例子：猫
+
+我们可以说是：猫 cat = new 猫();
+
+也可以说是：动物 animal = new 猫();
+
+这里的猫在不同时刻表现出了不同的形态，这就是多态
+
+多态的前提/体现
+
+- 有继承/实现关系
+- 有method重写
+- 有父类引用指向子类对象
+
+```java
+public class Animal{
+
+    public void eat(){
+        System.out.println("动物吃东西");
+    }
+}
+
+public class Cat extends Animal{
+
+    @Override
+    public void eat(){
+        System.out.println("猫吃鱼");
+    }
+}
+
+public class AnimalDemo{
+    public static void main(String[] args){
+        Animal a = new Cat();
+        a.eat();
+    }
+}
+```
+
+## 多态中成员访问的特点
+
+- 成员变量：编译看左边，运行看左边
+- 成员方法：编译看左边，运行看右边
+
+为什么成员变量和成员方法访问的方法不一样？
+
+- 因为成员方法有重写，成员变量没有
+
+```java
+public class Animal {
+    public int age = 40;
+
+    public void eat(){
+        System.out.println("吃东西");
+    }
+}
+
+public class Cat extends Animal{
+
+    public int age = 20;
+    public int weight = 10;
+
+    public void eat(){
+        System.out.println("猫吃鱼");
+    }
+    public void playgame(){
+        System.out.println("猫捉迷藏");
+    }
+}
+
+public class AnimalDemo {
+    public static void main(String[] args) {
+
+        Animal a = new Cat();
+
+        System.out.println(a.age);//40
+        //System.out.println(a.weight);
+        a.eat();//猫吃鱼
+        //a.playgame();
+    }
+}
+```
+
+## 多态的好处和弊端
+
+- 多态的好处：提高了程序的拓展性
+  - 具体体现：定义方法的时候，使用Dad类作为参数，将来使用的时候，使用具体的子类进行操作。
+- 多态的弊端：不能使用子类的特有功能
+
+```java
+public class Animal{
+
+    public void eat(){
+        System.out.println("动物吃东西");
+    }
+}
+
+public class AnimalOperator{
+    /*
+    public void useAnimal(Cat cat){
+        cat.eat();
+    }
+    public void useAnimal(Dog dog){
+        dog.eat();
+    }
+     */
+    public void useAnimal(Animal a){
+        //Animal a = new Cat();
+        //Animal a = new Dog();
+        a.eat();
+        //a.lookDoor();
+    }
+}
+
+public class Cat extends Animal{
+    public void eat(){
+        System.out.println("猫咪吃东西");
+    }
+}
+
+public class Pig extends Animal{
+    public void eat(){
+        System.out.println("猪吃肉");
+    }
+}
+
+public class Dog extends Animal{
+    public void eat(){
+        System.out.println("狗吃骨头");
+    }
+    public void lookDoor(){
+        System.out.println("狗会看门");
+    }
+}
+
+public class AnimalDemo{
+    public static void main(String[] args){
+        AnimalOperator ao = new AnimalOperator();
+        Cat c = new Cat();
+        Dog d = new Dog();
+        Pig p = new Pig();
+        ao.useAnimal(c);
+        ao.useAnimal(d);
+        ao.useAnimal(p);
+        
+    }
+}
+```
+
