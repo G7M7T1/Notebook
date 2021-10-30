@@ -2805,3 +2805,1422 @@ public class AnimalDemo{
 }
 ```
 
+## 多态中的转型
+
+- 向上转型
+
+  - 从子到父
+  - 父类引用指向子类对象
+
+- 向下转型
+
+  - 从父到子
+  - 父类引用转为子类对象
+
+  ```java
+  public class Animal{
+  
+      public void eat(){
+          System.out.println("动物吃东西");
+      }
+  }
+  
+  public class Cat extends Animal{
+  
+      @Override
+      public void eat(){
+          System.out.println("猫吃鱼");
+      }
+  
+      public void playgame(){
+          System.out.println("猫捉迷藏");
+      }
+  }
+  ```
+
+  ```java
+  public class AnimalDemo{
+      public static void main(String[] args){
+          //多态
+          Animal a = new Cat();//向上转型，把父指向子
+          a.eat();
+          //a.playgame(); Animal里面没有playgame
+          //想使用，必须创建cat的对象
+  
+  //        弄2个对象没必要
+  //        Cat c = new Cat();
+  //        c.eat();
+  //        c.playgame();
+  
+          //所以用向下转型
+          //强转
+          Cat c = (Cat)a;
+          c.playgame();
+      }
+  }
+  ```
+
+## 抽象类的概述和优点
+
+在Java中，一个 没有方法体 的方法应该定义为抽象方法，而类中如果有 抽象方法，该类必须定义为 抽象类
+
+- 抽象类 和 抽象方法 必须使用abstract关键字修饰
+
+  - public abstract class 类名{}
+  - public abstact void eat()
+
+- 抽象类 不一定有抽象方法，有抽象方法的一定是抽象类
+
+- 抽象类 不能实例化
+
+  - 抽象类 如果想实例化，参照多态的方式，通过子类对象实例化，这叫抽象类多态
+
+- 抽象类的子类
+
+  - 要么重写抽象类中的所有抽象方法
+  - 要么是抽象类
+
+  ```java
+  public abstract class Animal{
+      //抽象关键字 abstract
+      public abstract void eat();
+  
+      public void sleep(){
+          System.out.println("睡觉");
+      }
+  }
+  ========================================
+  public class Cat extends Animal{
+  
+      public void eat(){
+           System.out.println("猫吃鱼");
+       }
+  }
+  public class Dog extends Animal{
+  
+      @Override
+      public void eat(){
+          System.out.println("狗吃饭");
+      }
+  }
+  ========================================
+  public class AnimalDemo{
+      public static void main(String[] args){
+  
+          //多态来new一个抽象的对象
+          Animal a = new Cat();
+          a.eat();
+          a.sleep();
+          Animal d = new Dog();
+          d.sleep();
+          d.eat();
+      }
+  }
+  ```
+
+# 接口
+
+## 接口
+
+接口是一种 公共的规范标准，只要符合规范标准，大家都可以使用。
+
+Java中的接口更多的体现在 对行为的抽象
+
+- 接口用关键字interface修饰
+
+  - public interface 接口名 {}
+
+- 类实现接口用implements 表示
+
+  - public class 类名 implements 接口名{}
+
+- 接口不能实例化
+
+  - 接口实例化的方法：参照多态的方式，通过实现类对象实例化，这叫接口多态
+  - 多态的形式：具体类多态、抽象类多态、接口多态
+  - 多态的前提：有继承或者实现关系，有方法重写，有父（类/接口）引用指向（子/实现）类对象
+
+- 接口类的实现
+
+  - 要么重写接口中所有的抽象方法
+  - 要么是抽象类
+
+  ```java
+  public interface Jumpping {
+      public abstract void jump();
+  }
+  
+  //要么重写接口中所有的方法
+  public class Cat implements Jumpping{
+      @Override
+      public void jump(){
+          System.out.println("猫可以跳了");
+      }
+  }
+  
+  //要么重写抽象类
+  public abstract class Dog implements Jumpping{
+  
+  }
+  
+  //go！！
+  public class JumppingDemo{
+      public static void main(String[] args){
+  				Jumpping j = new Cat();
+          j.jump();
+      }
+  }
+  ```
+
+- 接口的成员特点
+
+  - 成员变量
+    - 只能是常量，默认修饰符是public static final
+  - 构造方法
+    - 接口没有构造方法，因为接口主要是对行为进行抽象的，是没有具体存在
+    - 一个类如果没有父类，默认继承object类
+  - 成员方法
+    - 只能是抽象方法
+    - 默认修饰符：public abstract
+    - 在接口中的方法，JDK8 or JDK9 有一些新特性。
+
+## 类和接口的关系
+
+- 类和类的关系
+
+  - 继承关系，只能单继承，但是可以多层继承
+
+- 类和接口的关系
+
+  - 实现关系，可以单实现，也可以多实现，还可以在继承一个类的同时实现多个接口
+
+- 接口和接口的关系
+
+  - 继承关系，可以单继承，也可以多继承
+
+  ```java
+  通过逗号，可以 implments多个接口
+  public class InterImpl implements Inter1,Inter2,Inter3{
+      
+  }
+  也可以extend一个类
+  public class InterImpl extends Object implements Inter1,Inter2,Inter3{
+  
+  }
+  甚至还可以接口和接口的继承
+  public interface Inter3 extends Inter1,Inter2{
+  
+  }
+  ```
+
+## 类和接口的区别
+
+- 成员区别
+  - 抽象类包含：变量，常量；有构造方法，也有非抽象方法
+  - 接口包含： 常量；抽象方法
+- 关系区别
+  - 类与类：继承，单继承
+  - 类与接口：实现，可以单实现，可以多实现
+  - 接口与接口：继承，单继承，多继承
+- 设计理念区别
+  - 抽象类：对类抽象，包括属性，行为
+  - 接口：对行为抽象，主要是行为
+
+## 类名作为形参和返回值
+
+- 方法的形参如果是类名，其实需要的是该类的对象
+- 方法的返回值如果是类目，其实返回的是该类的对象
+
+```java
+public class Cat{
+
+    public void eat(){
+        System.out.println("猫吃鱼");
+    }
+}
+
+public class CatOperator{
+
+    public void useCat(Cat c){ //new Cat ();
+        c.eat();
+    }
+
+    public Cat getCat() {
+        Cat c = new Cat();
+        return c;
+    }
+}
+
+public class CatDemo{
+    public static void main(String[] args){
+
+        CatOperator catOperator = new CatOperator();
+        Cat c = new Cat();
+        catOperator.useCat(c);
+
+        Cat c2 = catOperator.getCat();//new Cat()
+        c2.eat();
+    }
+}
+```
+
+## 接口名作为形参和返回值
+
+- 方法的形参是接口名，其实需要的是该接口的实现类对象
+- 方法的返回值是接口名，其实返回的是该接口的实现类对象
+
+```java
+public interface Jumpping{
+
+    void jump();
+}
+
+public class Cat implements Jumpping{
+
+    @Override
+    public void jump(){
+        System.out.println("猫会跳");
+    }
+}
+
+public class JumppingOperator{
+
+    public void useJumpping(Jumpping j) { //Jumpping j = new Cat();
+        j.jump();
+    }
+
+    public Jumpping getJumpping() {
+        Jumpping j = new Cat();
+        return j;
+    }
+}
+
+public class JumppingDemo{
+    public static void main(String[] args){
+        JumppingOperator jo = new JumppingOperator();
+        Jumpping j = new Cat();
+        jo.useJumpping(j);
+
+        Jumpping j2 = jo.getJumpping(); //new Cat()
+        j2.jump();
+    }
+}
+```
+
+## 抽象类名作为形参和返回值
+
+- 方法的形参是抽象类名，其实需要的是该抽象类的子类对象。
+- 方法的返回值是抽象类名，其实返回的是该抽象类的子类对象。
+
+```java
+public abstract class Animal{
+
+    public abstract void eat();
+}
+
+public class AnimalOperator{
+
+    public void useAnimal(Animal a){ // Animal a = new Cat();
+        a.eat();
+    }
+
+    public Animal getAnimal(){
+        Animal a = new Cat();
+        return a;
+    }
+}
+
+public class Cat extends Animal{
+    @Override
+    public void eat(){
+        System.out.println("猫吃鱼");
+    }
+}
+
+public class AnimalDemo{
+    public static void main(String[] args){
+        AnimalOperator animalOperator = new AnimalOperator();
+        Animal a = new Cat();
+        animalOperator.useAnimal(a);
+
+        Animal a2 = animalOperator.getAnimal();//new Cat();
+        a2.eat();
+    }
+}
+```
+
+# 类
+
+## 内部类
+
+内部类：就是在一个类中的类。
+
+格式：
+
+```java
+public class 类名 {
+		修饰符 class 类名 {
+		
+		}
+}
+
+例如：
+public class Outer {
+		public class Inter {
+
+		}
+}
+```
+
+- 内部类的特点
+  - 内部类可以直接访问外部类的成员，包括私有
+  - 外部类要访问内部类的成员，必须创建对象
+
+```java
+public class Outer{
+
+    private int num = 10;
+
+    public class Inter{
+
+        public void show(){
+            //sout
+            System.out.println(num);
+        }
+    }
+    public void method(){
+        //show();会报错，不能访问内部的，要创建对象
+        Inter i = new Inter();
+        i.show();
+    }
+}
+```
+
+## 成员内部类
+
+按照内部类中定义的位置不同，可以分为如下两种形式
+
+- 在类的成员位置：成员内部类
+- 在类的局部位置：局部内部类
+
+成员内部类，外部的定义方法
+
+- 格式：外部类名.内部类名.对象名=外部类对象.内部类对象;
+- 例如：Outer.Inner oi = new Outer().new.Inner();
+
+```java
+public class Outer{
+
+    private int num = 10;
+
+//    public class Inner {
+//        public void show(){
+//            System.out.println(num);
+//        }
+//    }
+
+    private class Inner {
+        public void show(){
+            System.out.println(num);
+        }
+    }
+    public void methoid(){
+        Inner i = new Inner();
+        i.show();
+    }
+}
+
+public class InnerDemo{
+    public static void main(String[] args){
+        //创建内部类对象并且调用方法
+//        Inner i = new Inner();
+        //Outer.Inner oi = new Outer().new Inner(); 不能针对私有
+//        oi.show();
+
+        //调用私有
+        Outer o = new Outer();
+        o.methoid();
+    }
+}
+```
+
+## 局部内部类
+
+局部内部类是在方法中定义类，所以外界无法直接使用，需要在方法内部创建对象并使用该类可以直接访问外部类的成员，也可以访问方法内的局部变量
+
+```java
+public class Outer{
+
+    private int num = 10;
+
+    public void method(){
+
+        int num2 =20;//局部类的变量
+        class Inner{
+            public void show(){
+                System.out.println(num);
+                System.out.println(num2);
+            }
+        }
+
+        Inner i = new Inner();//必须创建局部内部类对象调用方法
+        i.show();//必须创建局部内部类对象调用方法
+    }
+}
+
+public class OuterDemo{
+    public static void main(String[] args){
+        Outer o = new Outer();
+        o.method();
+
+    }
+}
+```
+
+## 匿名内部类
+
+前提：存在一个类或者接口，这里的类可以具体指的是抽象类
+
+- 格式
+
+```java
+new 类名或者接口名() {
+		重写方法;
+}
+```
+
+- 例子
+
+```java
+new Inter(){
+		public void show(){
+		}
+}
+本质：是一个继承了该类或者该接口的子类匿名对象
+```
+
+```java
+public interface Inter{
+
+    void show();
+}
+
+public class Outer{
+
+    public void method(){
+
+//        new Inter() {
+//            @Override
+//            public void show(){
+//                System.out.println("匿名内部类");
+//            }
+//        };
+
+        new Inter() {
+            @Override
+            public void show(){
+                System.out.println("匿名内部类");
+            }
+        }.show();
+        new Inter() {
+            @Override
+            public void show(){
+                System.out.println("匿名内部类");
+            }
+        }.show();
+
+        //多次调用
+
+        Inter i = new Inter() {
+            @Override
+            public void show(){
+                System.out.println("匿名内部类");
+            }
+        };
+        i.show();//用i调用
+
+    }
+}
+
+public class OuterDemo{
+    public static void main(String[] args){
+        Outer o = new Outer();
+        o.method();
+    }
+}
+```
+
+## 匿名内部类在开发的使用
+
+```java
+public interface Jumpping{
+
+    void jump();
+}
+```
+
+```java
+public class JumppingOperator{
+
+        public void method(Jumpping j){ //new Cat();
+                j.jump();
+        }
+}
+```
+
+```java
+public class Dog implements Jumpping{
+
+    @Override
+    public void jump(){
+        System.out.println("狗可以跳高了");
+    }
+}
+
+public class Cat implements Jumpping{
+
+    @Override
+    public void jump(){
+        System.out.println("猫可以跳高了");
+    }
+}
+```
+
+```java
+public class JumppingDemo{
+    public static void main(String[] args){
+        JumppingOperator jo = new JumppingOperator();
+        Jumpping j = new Cat();
+        jo.method(j);
+
+        Jumpping j2 = new Dog();
+        jo.method(j2);
+        System.out.println("--------");
+
+        jo.method(new Jumpping(){
+            @Override
+            public void jump(){
+                System.out.println("猫可以跳高了");
+            }
+        });
+
+        jo.method(new Jumpping(){
+            @Override
+            public void jump(){
+                System.out.println("狗可以跳高了");
+            }
+        });
+    }
+}
+```
+
+# 常用Api
+
+## Math
+
+Math包含一些基本的运算方法：基本指数，对数，平方根，三角函数。
+
+没有构造方法，看类的成员是否是static静态的，如果是，通过类名即可调用。
+
+```java
+常用方法：
+public static int abs(int a) 说明：返回参数的绝对值
+
+public static double ceil(double a) 说明：返回>or=参数的最小double值，等于一个整数
+
+public static double floor(double a) 说明：返回<or=参数的最大double值，等于一个整数
+
+public static int round(float a) 说明: 按照四舍五入返回最接近参数的int
+
+public static int max(int a,int b) 说明:返回两个int值的较大值
+
+public static int min(int a,int b) 说明:返回两个int值的较小值
+
+public static double pow(double a,double b) 说明:返回a的b次幂
+
+public static double random() 说明: 返回值为double的正值
+```
+
+```java
+public class MathDemo{
+    public static void main(String[] args){
+//        public static int abs(int a) 说明：返回参数的绝对值
+        System.out.println(Math.abs(88));
+        System.out.println(Math.abs(-88));
+        System.out.println("--------");
+//        public static double ceil(double a) 说明：返回>or=参数的最小double值，等于一个整数
+        System.out.println(Math.ceil(12.34));
+        System.out.println(Math.ceil(12.56));
+        System.out.println("--------");//返回值是double类型！所以是.0
+//        public static double floor(double a) 说明：返回<or=参数的最大double值，等于一个整数
+        System.out.println(Math.floor(12.34));
+        System.out.println(Math.floor(12.56));
+        System.out.println("--------");
+//        public static int round(float a) 说明: 按照四舍五入返回最接近参数的int
+        System.out.println(Math.round(12.34F));
+        System.out.println(Math.round(12.56F));
+        System.out.println("--------");
+//        public static int max(int a,int b) 说明:返回两个int值的较大值
+        System.out.println(Math.max(66.6,88.8));
+        System.out.println(Math.max(66,88));
+        System.out.println("--------");
+//        public static int min(int a,int b) 说明:返回两个int值的较小值
+        System.out.println(Math.min(66.6,88.8));
+        System.out.println(Math.min(66,88));
+        System.out.println("--------");
+//        public static double pow(double a,double b) 说明:返回a的b次幂
+        System.out.println(Math.pow(2.0,3.0));
+        System.out.println("--------");
+//        public static double random() 说明: 返回值为double的正值
+        System.out.println(Math.random());
+        System.out.println(Math.random()*100);
+        System.out.println((int)(Math.random()*100)+1);
+        System.out.println((int)(Math.random()*100)+"%");
+
+    }
+}
+```
+
+## System
+
+System包含几个有用的类字段和方法，它不能被实例化
+
+```java
+常用方法：
+public static exit(int status) 终止当前运行的Java虚拟机，非0表示异常终止
+public static long currentTimeMillis() 返回当前时间（以毫秒为单位）
+```
+
+```java
+public class SystemDemo{
+    public static void main(String[] args){
+//        System.out.println("开始");
+////        public static exit(int status) 终止当前运行的Java虚拟机，非0表示异常终止
+//        System.exit(0);
+//        System.out.println("结束");
+
+//        public static long currentTimeMillis() 返回当前时间（以毫秒为单位）
+        //System.out.println(System.currentTimeMillis());
+        System.out.println (System.currentTimeMillis () * 1.0 / 1000 / 60 / 60 / 24 / 365 + "年");
+
+        //记录代码的运行时间
+
+        long start = System.currentTimeMillis ();
+        for(int i = 0;i<10000;i++){
+            System.out.println (i);
+        }
+        long end = System.currentTimeMillis ();
+        System.out.println ("共耗时"+(end-start)+"毫秒");
+    }
+}
+```
+
+## Object类的toString（）用法 一
+
+Object是类层次结构的根，每个类都可以将Object作为超类。所有类都直接或者间接的继承该类。
+
+构造方法：public Object()
+
+toString()，建议所有子类重写一遍方法。
+
+```java
+public class Student{ // Student extends Object
+    private String name;
+    private int age;
+
+    public Student(){
+    }
+
+    public Student(String name ,int age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getAge(){
+        return age;
+    }
+
+    public void setAge(int age){
+        this.age = age;
+    }
+
+    //重写
+
+    @Override
+    public String toString(){
+        return "Student{" +
+                "name='" + name + '\\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+```java
+//建议所有子类重写此方法
+//自动生成即可
+
+public class ObjectDemo{
+    public static void main(String[] args){
+        Student s = new Student ();
+        s.setName ("林");
+        s.setAge (30);
+        System.out.println (s);//Student@49e4cb85
+        System.out.println (s.toString ());//Student@49e4cb85,默认底层调用了toString方法();
+    }
+}
+
+//    public void println(Object x) {  // x = s
+//        String s = String.valueOf(x);
+//        synchronized (this) {
+//            print(s);
+//            newLine();
+//        }
+//    }
+
+//    public static String valueOf(Object obj) { // obj = x
+//        return (obj == null) ? "null" : obj.toString();
+//    }
+
+//    public String toString() {
+//        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+//    }
+```
+
+## Object类的toString（）用法 二
+
+比较对象是否相等，默认比较地址，重写可比较内容，自动生成。
+
+```java
+public class Student{ // Student extends Object
+    private String name;
+    private int age;
+
+    public Student(){
+    }
+
+    public Student(String name ,int age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getAge(){
+        return age;
+    }
+
+    public void setAge(int age){
+        this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+
+        Student student = (Student) o;
+
+        if (age != student.age) return false;
+        return name != null ? name.equals (student.name) : student.name == null;
+    }
+
+    @Override
+    public int hashCode(){
+        int result = name != null ? name.hashCode () : 0;
+        result = 31 * result + age;
+        return result;
+    }
+}
+```
+
+```java
+//建议所有子类重写此方法
+//自动生成即可
+
+public class ObjectDemo{
+    public static void main(String[] args){
+        Student s1 = new Student ();
+        s1.setName ("林");
+        s1.setAge (19);
+
+        Student s2 = new Student ();
+        s2.setName ("林");
+        s2.setAge (19);
+
+        //比较是否 相同
+        System.out.println (s1 == s2);//不能实现，因为s1是new出来的，代表是地址，s2也是地址。
+
+        System.out.println (s1.equals (s2));
+    }
+}
+```
+
+## 冒泡排序原理
+
+排序：将一组数据按照固定的规则进行排列
+
+冒泡排序：一种排序方式，对要进行排序的数据中相邻的数据进行比较，将较大的数据放在后面，一次对所有的数据进行操作，直至所有数据按要求完成排序。
+
+- 如果有n个数据进行排序，总共需要进行n-1次排序
+- 每一次比较完毕，下一次的比较就会少一个数据参与
+
+```java
+public class ArrayDemo{
+    public static void main(String[] args){
+        int[] arr = {24 ,69 ,80 ,57 ,13};
+        System.out.print ("排序前");
+        printArray (arr);
+
+        for(int x=0;x<arr.length-1;x++){
+            for(int i =0;i<arr.length-1-x;i++){//-1-x;
+                if(arr[i]>arr[i+1]) {//如果前面的数字比后面的大，那么交换
+                    int temp = arr[i];
+                    arr[i] = arr[i+1];
+                    arr[i+1] = temp;
+                }
+            }
+            System.out.println ("排序后");
+            printArray (arr);
+        }
+    }
+
+    public static void printArray(int[] arr){
+        System.out.print("[");
+        for(int x=0;x<arr.length;x++){
+            if(x==arr.length-1){
+                System.out.print(arr[x]);
+            }else{
+                System.out.print(arr[x]+", ");
+            }
+        }
+        System.out.print("]");
+    }
+
+}
+```
+
+## ArrayList的概述和常用方法
+
+Array类包含用于数组的各种方法
+
+- 构造方法用private修饰
+- 成员用public static修饰
+
+```java
+public static String toString(int[] a) 说明：返回指定数组中的内容和字符串表示形式
+public static void sort(int[] a) 说明：按照数字顺序排列指定的数组
+    
+import java.util.Arrays;
+
+public class ArrayDemo{
+    public static void main(String[] args){
+        int[] arr = {24 ,69 ,80 ,57 ,13};
+
+        System.out.println ("排序前"+ Arrays.toString (arr));
+
+        Arrays.sort(arr);
+
+        System.out.println ("排序后"+ Arrays.toString (arr));
+
+    }
+}
+```
+
+## 基本类型包装类概述
+
+将基本的数据类型封装成对象的好处是在于可以用对象定义更多的功能方法操作该数据
+
+常用的操作：用于数据类型和字符串之间的转换
+
+```java
+基本数据类型         包装类
+byte                Byte
+short               Short
+int                 Integer
+long                Long
+float               Float
+double              Double
+char                Character
+boolean             Boolean
+```
+
+```java
+public class IntergeDemo{
+    public static void main(String[] args){
+
+        System.out.println (Integer.MIN_VALUE);
+        System.out.println (Integer.MAX_VALUE);
+    }
+}
+```
+
+## Integer类的概述和使用
+
+Integer：包装一个对象中的原始类型int的值
+
+```java
+public Integer(int value) （过时了）根据int值创建integer对象
+public Integer(String s) （过时了）根据String值创建integer对象
+public static Integer valueOf(int i) 返回表示指定的int值Ingeter实例
+public static Integer valueOf(String s)返回一个保存指定值的Integer对象String
+```
+
+```java
+//public static Integer valueOf(int i) 返回表示指定的int值Ingeter实例
+//public static Integer valueOf(String s)返回一个保存指定值的Integer对象String
+
+public class IntergeDemo{
+    public static void main(String[] args){
+        //public static Integer valueOf(int i) 返回表示指定的int值Ingeter实例
+        Integer i1 = Integer.valueOf (100);
+        System.out.println (i1);
+
+        //public static Integer valueOf(String s)返回一个保存指定值的Integer对象String
+        Integer i2 = Integer.valueOf ("100");
+		Integer i3 = Integer.valueOf ("abc");//会报错，String不能弄。
+        System.out.println (i2);
+
+        
+    }
+}
+```
+
+## int和String的相互转换
+
+基本类型包装类最常见的操作是：用于基本类型和字符串之间的互相转换
+
+- int转化为String
+  - public static String valueOf(int i):返回int参数的字符串表示形式，该方法是String类的方法
+- String转化为int
+  - public static int parseInt(String s):将字符串解析为int类型，该方法是Integer类中的方法
+
+```java
+//public static Integer valueOf(int i) 返回表示指定的int值Ingeter实例
+//public static Integer valueOf(String s)返回一个保存指定值的Integer对象String
+
+public class IntergeDemo{
+    public static void main(String[] args){
+        // int to String
+        int num = 100;
+        // 第一种
+        String s1 = "" + num;
+        System.out.println (s1);
+        // 第二种
+        // public static String valueOf(int i)
+        String s2 = String.valueOf (num);
+        System.out.println (s2);
+        System.out.println ("--------");
+        // String to int
+        String s = "100";
+        // 第一种
+        // String to Integer to int
+        Integer i = Integer.valueOf (s);
+        System.out.println (i);
+        // public int intValue()
+        int x = i.intValue ();
+        System.out.println (x);
+
+        // 第二种
+        //public static int parseInt(String s)
+        int y = Integer.parseInt (s);
+        System.out.println (y);
+    }
+}
+```
+
+## 自动装箱和开箱
+
+- 装箱：把基本数据类型转化为对应的包装类类型
+- 拆箱：把包装类类型转化为对应的基本数据类型
+
+注意：在使用包装类类型的时候，如果做操作，最好先判断是否为NULL。
+
+推荐，只要是对象，在使用前就必须用！=NULL判断
+
+```java
+public class Demo{
+    public static void main(String[] args){
+        //装箱：把基本数据类型转化为对应的包装类类型
+        Integer i = Integer.valueOf (100);
+        //自动装箱
+        Integer ii = 100;//Integer.valueOf (100);
+        System.out.println (ii);
+
+        //拆箱：把包装类类型转化为对应的基本数据类型
+        // ii+=200;
+
+      //  ii = ii.intValue () + 200;
+        ii+=200;//自动装箱 ii = ii.intValue () + 200;
+        System.out.println (ii);
+
+        Integer iii = null; //NullPointerException
+        if(iii!=null){
+            iii += 300; 
+        }
+    }
+}
+```
+
+# 日期
+
+## Date类
+
+Date代表了一个特定的时间，精确到毫秒
+
+```java
+public Date() 分配一个Date对象，并初始化，以便它代表它被分配的时间，精确到毫秒
+public Date(long date) 分配一个Date对象，并将其初始化为表示标准基准时间起指定的毫秒数
+import java.util.Date;
+
+public class DateDemo{
+    public static void main(String[] args){
+//        public Date() 分配一个Date对象，并初始化，以便它代表它被分配的时间，精确到毫秒
+        Date d1 = new Date ();
+        System.out.println (d1);
+
+//        public Date(long date) 分配一个Date对象，并将其初始化为表示标准基准时间起指定的毫秒数
+        long date = 1000 * 60 * 60;
+        Date d2 = new Date (date);
+        System.out.println (d2);
+    }
+}
+```
+
+## Date类常用方法
+
+```java
+public long getTime() 获取的是日期对象从1970年1月1日00：00：00到现在的毫秒值
+public void setTime() 设置时间，给的是毫秒值
+import java.util.Date;
+
+public class DateDemo{
+    public static void main(String[] args){
+
+        //创建日期对象
+        Date d = new Date ();
+        Date d1 = new Date ();
+
+//      public long getTime() 获取的是日期对象从1970年1月1日00：00：00到现在的毫秒值
+        System.out.println (d.getTime ());
+        System.out.println (d.getTime ()*1.0/1000/60/60/24/365+"年");
+
+        System.out.println (d1);//Thu Oct 14 23:18:42 EDT 2021
+        //long time = 1000*60*60;
+        long time = System.currentTimeMillis ();
+        d1.setTime (time);
+        System.out.println (d1);
+    }
+}
+```
+
+## SimpleDateFormat类
+
+SimpleDateFormat类是一个具体的类，用于以区域设置敏感的方式格式化和解析日期。主要学习日期格式化和解析
+
+日期和时间格式由日期和时间模式字符串指定，在日期和时间模式字符串种，从“A”到“Z”以及从'a'到‘z’引号的字母被解释为表示日期或者时间字符串的组件的模式字母
+
+- y 年
+- M 月
+- d 日
+- H 时
+- m 分
+- s 秒
+
+```java
+构造方法
+public SimpleDateFormat() 构造一个SimpleDateFormat，使用默认模式和日期格式
+public SimpleDateFormat(String pattern)构造一个SimpleDateFormat使用给定的模式和默认的日期格式
+```
+
+## SimpleDateFormat格式化和解析日期
+
+1.格式化（从Date到String）
+
+public final String format(Date date):将日期格式化成 日期/时间字符串
+
+2.解析（从String到Date）
+
+public Date parse(String source):从给定字符串的开始解析文本以日期生成
+
+```java
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class DateDemo{
+    public static void main(String[] args) throws ParseException{
+
+        // 1.格式化（从Date到String）
+        Date date = new Date ();
+//public SimpleDateFormat() 构造一个SimpleDateFormat，使用默认模式和日期格式
+//        SimpleDateFormat sdf = new SimpleDateFormat ();
+        SimpleDateFormat sdf = new SimpleDateFormat ("yyyy年MM月dd日HH:mm:ss");
+        String s = sdf.format (date);
+        System.out.println (s);
+        System.out.println ("----------");
+
+        //public Date parse(String source):从给定字符串的开始解析文本以日期生成
+        String ss = "2048-08-09 11:11:11";
+        //
+        SimpleDateFormat sdf22 = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+        Date date1 = sdf22.parse (ss);//alt+enter，抛出异常
+        System.out.println (date1);
+
+    }
+}
+```
+
+## Calendar类
+
+Calendar为某一时刻和某一时段日历字段之间的转换提供了一些方法，并为操作日历字段提供了一些方法
+
+Calendar提供了一个类方法getInstance用于获取Calender对象，其日历字段已使用当前日期和时间初始化
+
+```java
+构造方法：Calendar rightNow = Calendar.getInstance();
+
+import java.util.Calendar;
+
+public class CalendarDemo{
+    public static void main(String[] args){
+        //创建对象
+        Calendar c = Calendar.getInstance();
+//        System.out.println (c);
+
+        //public int get (int field)
+        int year = c.get (Calendar.YEAR);
+        int month = c.get (Calendar.MONTH)+1;
+        int date = c.get (Calendar.DATE);
+
+        System.out.println (year+"年"+month+"月"+date+"日");
+    }
+}
+```
+
+## Calendar 的常用方法
+
+```java
+public int get(int field) 返回给定日历字段的值
+public abstract void add(int field,int amount) 根据日历的规则，将指定的时间量添加或者
+减去给定的日历字段
+public final void set(int year,int month,int date)设置当前日历日期
+```
+
+```java
+import java.util.Calendar;
+
+public class CalendarDemo{
+    public static void main(String[] args){
+
+        //创建对象
+        Calendar c = Calendar.getInstance ();
+//        System.out.println (c);
+
+        //public int get (int field)
+//        int year = c.get (Calendar.YEAR);
+//        int month = c.get (Calendar.MONTH)+1;
+//        int date = c.get (Calendar.DATE);
+//        System.out.println (year+"年"+month+"月"+date+"日");
+        //public abstract void add(int field,int amount) 根据日历的规则，将指定的时间量添加或者
+
+//        c.add (Calendar.YEAR,-10);
+//        c.add (Calendar.DATE,-5);
+//        int year = c.get (Calendar.YEAR);
+//        int month = c.get (Calendar.MONTH)+1;
+//        int date = c.get (Calendar.DATE);
+//        System.out.println (year+"年"+month+"月"+date+"日");
+
+//        public final void set(int year,int month,int date)设置当前日历日期
+          c.set(2048,11,12);
+
+          int year = c.get (Calendar.YEAR);
+        int month = c.get (Calendar.MONTH)+1;
+        int date = c.get (Calendar.DATE);
+        System.out.println (year+"年"+month+"月"+date+"日");
+
+    }
+}
+```
+
+获取任意一年的二月有多少天？
+
+```java
+import java.util.Calendar;
+import java.util.Scanner;
+
+public class CalendarDemo{
+    public static void main(String[] args){
+
+        Scanner sc = new Scanner (System.in);
+        System.out.println ("请输入年份");
+        int year = sc.nextInt ();
+
+        //设置对象的年月日
+        Calendar c = Calendar.getInstance ();
+        c.set (year,2,1);
+
+        //3月1日往前推一天
+        c.add(Calendar.DATE,-1);
+
+        //获取并输出
+        int date = c.get (Calendar.DATE);
+
+        System.out.println (year+"年的二月份有"+date+"天");
+    }
+}
+```
+
+# 异常
+
+## 异常
+
+```java
+public class Demo{
+    public static void main(String[] args){
+        method ();
+    }
+    public static void method() {
+        int[] arr = {1,2,3};
+//        System.out.println (arr[3]);//ArrayIndexOutOfBoundsException索引越界异常 Runtime类型的Exception
+        System.out.println (arr[2]);
+    }
+}
+```
+
+- Error：严重问题，不需要处理
+- Exception：异常类，它表示程序本身可以处理的问题
+- RuntimeException：编译器不检查，出问题后，回来改代码
+- 非RuntimeException：编译的时候必须处理，否则不能RUN
+
+## JVM的默认处理方案
+
+如果程序报错了，没做任何处理，JVM会做出默认处理
+
+- 把异常的名称，异常原因和出现的位置输出在控制台
+- 停止程序执行
+
+```java
+public class Demo{
+    public static void main(String[] args){
+        System.out.println ("开始");
+        method ();
+        System.out.println ("结束");
+    }
+    public static void method() {
+        int[] arr = {1,2,3};
+//        System.out.println (arr[1]);
+        System.out.println (arr[3]);
+
+        //开始
+//        Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException:原因： Index 3 out of bounds for length 3
+//        位置：at Demo.method(Demo.java:10)
+//        at Demo.main(Demo.java:4)
+    }
+}
+```
+
+## 伟大的try catch！
+
+如果程序出问题了，需要自己处理，有两种方案
+
+- try……catch
+- throws
+
+```java
+格式：
+
+try {
+			可能出现异常的代码;
+} catch(异常类名 变量名) {
+			异常的处理代码; 
+}
+```
+
+执行流程
+
+程序从try里面的代码开始执行，出现异常，会自动生成一个异常类对象，该异常对象将被提交给Java运行时的系统。
+
+当Java运行系统接收到异常对象时，会到catch中去找匹配的异常类，找到后进行异常处理
+
+执行完毕之后，程序还可以继续往下执行。
+
+```java
+public class Demo{
+    public static void main(String[] args){
+        System.out.println ("开始");
+        method();
+        System.out.println ("结束");
+    }
+    public static void method(){
+        try {
+            int[] arr = {1 ,2 ,3};
+            System.out.println (arr[3]); //new ArrayIndexOutOfBoundsException();
+        } catch (ArrayIndexOutOfBoundsException e){
+//            System.out.println ("您访问的数组索引不存在");
+            e.printStackTrace ();
+        }
+    }
+}
+```
+
+## Throwable
+
+成员方法
+
+```java
+public String getMessage() 返回此throwable的详细消息字符串 
+public String toString() 返回此可抛出的简短描述
+public void printStackTrace() 把异常的错误信息输出在控制台
+```
+
+```java
+public class Demo{
+    public static void main(String[] args){
+        System.out.println ("开始");
+        method();
+        System.out.println ("结束");
+    }
+
+    public static void method(){
+        try {
+            int[] arr = {1 ,2 ,3};
+            System.out.println (arr[3]); //new ArrayIndexOutOfBoundsException();
+        } catch (ArrayIndexOutOfBoundsException e){
+//            e.printStackTrace ();
+//            System.out.println (e.getMessage ());//异常原因
+            System.out.println (e.toString ());//异常原因和类名
+            e.printStackTrace ();//最全的
+        }
+    }
+}
+```
+
+## 编译时异常和运行时异常
+
+Java中的异常分为两大类：编译时异常和运行时异常，也被称为受检异常和非受检异常。
+
+所有的RuntimeException类及其子类被称为运行时异常，其他的异常都是编译时异常。
+
+- 编译时异常：必须显示处理，否则程序就会发生错误，无法通过编译
+- 运行时异常：无需显示处理，也可以和编译时异常一样处理
+
+```java
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
