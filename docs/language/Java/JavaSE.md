@@ -1,14 +1,11 @@
 ---
-
 sidebar_position: 2
-
-sidebar_label: 'JavaSE' 
-
+sidebar_label: 'Java SE' 
 ---
 
-# Topic
+# Java SE
 
-## 这是一个Private的Markdown，
+## Markdown
 
 - 用于记录自己的学习过程中的知识点
 - 用于帮助将来上大学以后的学渣同学
