@@ -1,6 +1,6 @@
 ---
 slug: Nakiri_Ayame
-title: Nakiri Ayame Arts #1
+title: Nakiri Ayame Arts No.1
 authors: [Xpakeb13]
 tags: [Nakiri Ayame]
 ---
