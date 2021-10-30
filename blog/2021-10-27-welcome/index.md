@@ -1,6 +1,6 @@
 ---
 slug: welcome
-title: 欢迎来访
+title: 欢迎来访 - 笔记本
 authors: [G7M7T1, Xpakeb13]
 tags: [First, Welcome]
 ---
