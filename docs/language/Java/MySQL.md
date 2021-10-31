@@ -103,7 +103,7 @@ Structred Query Language：结构化查询语言
 
 ​		C（Create）：创建
 
-```mysql
+```sql
 - 创建数据库
   - create database 数据库名称
 - 创建数据库，判断是否存在
@@ -118,7 +118,7 @@ Structred Query Language：结构化查询语言
 
 - 查询所有数据库名称：
 
-  ```mysql
+  ```sql
   show databases；
   ```
 
