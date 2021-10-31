@@ -40,7 +40,7 @@ sidebar_label: 'JavaWeb-MySQL'
 
 ## MySQL登录
 
-```mysql
+```sql
 1. mysql -uroot -p密码
 2. mysql -hip -uroot -p连接目标的密码
 3. mysql --host=ip --user=root --password=连接目标的密码
@@ -50,7 +50,7 @@ sidebar_label: 'JavaWeb-MySQL'
 
 ## MYSQL退出
 
-```mysql
+```sql
 1. exit
 2. quit
 ```
@@ -77,11 +77,11 @@ Structred Query Language：结构化查询语言
 
 4.3种注释
 
-```mysql
-	单行注释：--注释内容 
+```sql
+单行注释：--注释内容 
 或 # 注释内容（mysql 特有） 
 
-​	多行注释：/* 注释 */
+多行注释：/* 注释 */
 ```
 
 
@@ -413,6 +413,57 @@ SELECT * FROM student ORDER BY math ASC,english DESC;
 
 ### 聚合函数
 
+概念：将一列数据作为一个整体，进行纵向计算。按照生活的理解：如果想看表中，数学成绩一列，作为一个整体，得出一个平均分。
+
+主要是用来做列的纵向计算，也就是竖着。
+
+- count：计算数量，个数
+
+```mysql
+SELECT COUNT(列名) FROM 表名;
+SELECT COUNT(NAME) FROM student;
+```
+
+- max：计算最大值
+
+```mysql
+SELECT MAX(列名) FROM 表名;
+SELECT MAX(math) FROM student;
+```
+
+- min：计算最小值
+
+
+
+- sum：求和
+- avg：计算平均值
+
+注意：聚合函数的计算都是排除了null值的，意味着如果value为null就不会计入统计
+
+当然，你肯定觉得排除null这个行为很傻逼，很脑残，所以有这么两个个方法解决
+
+- 第一个方法，选择非null的列进行找到count，找到主键
+- 第二个方法，count(*)
+
+```mysql
+SELECT COUNT(IFNULL(english,0)) FROM student; 
+-- english列中有一个值是NULL，但是你要找到包括NULL的一共的所有数量，
+-- IFNULL(english,0)的意思是，如果english列中，有值为NULL，则用0进行替代
+SELECT COUNT(*) FROM student;
+意思是，这一列数据只要有一列没有值为null，就进行运算
+```
+
+当然= =，听别人说以后去上班，如果MySQL使用*号，也就是星号，用一次扣50块钱工资，不知道真的假的，能不用尽量别用吧，写详细点。
+
+所以这样写
+
+```mysql
+SELECT COUNT(english) FROM student;
+-- 这个不会把值为null的计算在内！！！如果想把null值的数量记录在内，记得使用 (IFNULL(列名,0)) 这个格式
+```
+
+
+
 ### 分组查询
 
 ### 分页查询
@@ -424,3 +475,7 @@ SELECT * FROM student ORDER BY math ASC,english DESC;
 # 范式
 
 # 数据库的备份和还原
+
+```cpp
+```
+
