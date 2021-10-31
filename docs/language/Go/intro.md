@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-sidebar_label: '介绍文档'
+sidebar_label: '介绍Go'
 ---
 
 # Go 语言
