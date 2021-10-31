@@ -124,7 +124,7 @@ Structred Query Language：结构化查询语言
 
 - 查询某个数据库的字符集：查看某个数据库的创建语句
 
-  ```mysql
+  ```sql
   show create database 数据库名字；
   ```
 
@@ -132,7 +132,7 @@ Structred Query Language：结构化查询语言
 
 - 修改数据库的字符集
 
-  ```mysql
+  ```sql
   - - alter database 数据库名称 character set 字符集名称
   ```
 
@@ -140,13 +140,13 @@ Structred Query Language：结构化查询语言
 
 - 删除数据库
 
-  ```mysql
+  ```sql
   - - drop database 数据库名称；
   ```
 
 - 判断数据库是否存在，存在再删除
 
-  ```mysql
+  ```sql
   - - drop database if exists 数据库名称;
   ```
 
@@ -154,13 +154,13 @@ Structred Query Language：结构化查询语言
 
 - 查询当前正在使用的数据库名称
 
-  ```mysql
+  ```sql
   select database();
   ```
 
 - 使用数据库
 
-  ```mysql
+  ```sql
   use 数据库名称;
   ```
 
@@ -172,7 +172,7 @@ Structred Query Language：结构化查询语言
 
   - 语法：
 
-    ```mysql
+    ```sql
     create table 表明（
     
     	列名1 数据类型1，
@@ -219,19 +219,19 @@ Structred Query Language：结构化查询语言
 
   查询某个数据中所有表的名称
 
-  ```mysql
+  ```sql
   show tables；
   ```
 
   查询表结构
 
-  ```mysql
+  ```sql
   desc 表名；
   ```
 
   3.U（Update）：修改
 
-  ```mysql
+  ```sql
   1. 修改表名
      1. alter table 表名 rename to 新表名;
   2. 修改表的字符集
@@ -247,7 +247,7 @@ Structred Query Language：结构化查询语言
 
 - 4.D（Detele）：删除
 
-  ```mysql
+  ```sql
   - drop table 表名;
   - drop table if exists 表名;
   ```
@@ -258,7 +258,7 @@ Structred Query Language：结构化查询语言
 
 ## 添加数据
 
-```mysql
+```sql
 insert into 表名（列名1，列名2，.......列名n） values（值1，值2，......值n）;
 ```
 
@@ -273,7 +273,7 @@ insert into 表名（列名1，列名2，.......列名n） values（值1，值2�
 
 - 删除：
 
-```mysql
+```sql
 delete from 表名 [where 条件];
 delete from student where id=1;	
 ```
@@ -282,7 +282,7 @@ delete from student where id=1;
 
 - 如果要删除所有记录，有两种操作方法
 
-  ```mysql
+  ```sql
   1.detele from 表名; #不推荐使用，有多少条记录会执行多少次删除的操作
   2.TRUNCATE TABLE 表名; #先删除表，再创建一张一样的表
   ```
@@ -291,7 +291,7 @@ delete from student where id=1;
 
 1. 语法：
 
-```mysql
+```sql
 update 表名 set 列名1 = 值1,列名2 = 值2,......[where 条件];
 update 表名 set age = 17 where id=1;
 ```
@@ -302,11 +302,11 @@ update 表名 set age = 17 where id=1;
 
 ## 语法
 
-```mysql
+```sql
 select * from 表名;
 ```
 
-```mysql
+```sql
 select
 	字段列表
 from
@@ -327,7 +327,7 @@ limit
 
 ### 多个字段查询
 
-```mysql
+```sql
 select 字段名1,字段名2,... from 表名;
 ```
 
@@ -335,7 +335,7 @@ select 字段名1,字段名2,... from 表名;
 
 ### 去除重复
 
-```mysql
+```sql
 distinct
 ```
 
@@ -343,7 +343,7 @@ distinct
 
 - 一般可以使用四则运算计算一些列的值
 
-- ```mysql
+- ```sql
   ifnull(表达式1,表达式2);
   ```
 
@@ -355,7 +355,7 @@ distinct
 
 - as关键字，也可以省略，加一个空格就行
 
-```mysql
+```sql
 SELECT NAME,math english,math+IFNULL(english,0) AS 总分 FROM student;
 ```
 
@@ -365,7 +365,7 @@ SELECT NAME,math english,math+IFNULL(english,0) AS 总分 FROM student;
 
 ### 运算符
 
-```mysql
+```sql
 > 、 < 、 <= 、 >= 、 = 、<> :<>在SQL中表示不等于，在MYSQL中可以写!=
 and 或者 && ：与，SQL中建议用and，后者不通用
 or 或者 || ：或
@@ -382,9 +382,24 @@ IS NULL：(查询某一列为NULL的值)，不能写=NULL
 SELECT * FROM student WHERE english IS NULL; 
 SELECT * FROM student WHERE english IS NOT NULL;
 
-LIKE'张%' ：模糊查询
-
 ```
+
+```sql
+LIKE'张%' ：模糊查询
+占位符：
+_ 下划线，表示单个任意字符
+% 百分号，表示多个任意字符
+--姓马的有哪些？
+SELECT * FROM student WHERE NAME LIKE '马%';
+--查询第二个字是化的人
+SELECT * FROM student WHERE NAME LIKE '_化%';
+--查询姓名是三个字的人
+SELECT * FROM student WHERE NAME LIKE '___';
+--查询姓名中包含马的人
+SELECT * FROM student WHERE NAME LIKE '%马%';
+```
+
+
 
 ## 查询语句
 
@@ -392,7 +407,7 @@ LIKE'张%' ：模糊查询
 
 - 语法：order by 子句
 
-```mysql
+```sql
 order by 排序字段1 排序方式1,排序字段2 排序方式2..... ;
 ```
 
@@ -400,14 +415,14 @@ order by 排序字段1 排序方式1,排序字段2 排序方式2..... ;
   - ACS：升序，默认的
   - DESC：降序
 
-```mysql
+```sql
 SELECT * FROM student ORDER BY math ASC;
 SELECT * FROM student ORDER BY math DESC;
 ```
 
 - 如果有多个排序条件，则当前边的条件值一样时，才会判断第二条件
 
-```mysql
+```sql
 SELECT * FROM student ORDER BY math ASC,english DESC;
 ```
 
@@ -419,14 +434,14 @@ SELECT * FROM student ORDER BY math ASC,english DESC;
 
 - count：计算数量，个数
 
-```mysql
+```sql
 SELECT COUNT(列名) FROM 表名;
 SELECT COUNT(NAME) FROM student;
 ```
 
 - max：计算最大值
 
-```mysql
+```sql
 SELECT MAX(列名) FROM 表名;
 SELECT MAX(math) FROM student;
 ```
@@ -445,7 +460,7 @@ SELECT MAX(math) FROM student;
 - 第一个方法，选择非null的列进行找到count，找到主键
 - 第二个方法，count(*)
 
-```mysql
+```sql
 SELECT COUNT(IFNULL(english,0)) FROM student; 
 -- english列中有一个值是NULL，但是你要找到包括NULL的一共的所有数量，
 -- IFNULL(english,0)的意思是，如果english列中，有值为NULL，则用0进行替代
@@ -457,7 +472,7 @@ SELECT COUNT(*) FROM student;
 
 所以这样写
 
-```mysql
+```sql
 SELECT COUNT(english) FROM student;
 -- 这个不会把值为null的计算在内！！！如果想把null值的数量记录在内，记得使用 (IFNULL(列名,0)) 这个格式
 ```
@@ -465,6 +480,43 @@ SELECT COUNT(english) FROM student;
 
 
 ### 分组查询
+
+1.语法
+
+```sql
+group by 分组字段;
+--按照sex分组，分别查询男女同学，math课的平均分
+SELECT sex , AVG(math)FROM student GROUP BY sex;
+--按照sex分组，分别查询男女同学，math课的平均分，以及人数
+SELECT sex , AVG(math),COUNT(id) FROM student GROUP BY sex;
+--按照sex分组，分别查询男女同学，math课的平均分（如果分数低于70，那么不加入分组），以及人数
+SELECT sex , AVG(math),COUNT(id) FROM student WHERE math>70 GROUP BY sex;
+--按照sex分组，分别查询男女同学，math课的平均分（如果分数低于70，那么不加入分组），以及人数，人数要大于2个人
+SELECT sex , AVG(math),COUNT(id) FROM student WHERE math>70 GROUP BY sex HAVING COUNT(id)>2;
+```
+
+2.注意
+
+第一件事：分组之后，查询的字段：分组字段、要么是聚合函数，不能写其它字段，没任何意义
+
+第二件事：where和having的区别？
+
+- where在分组之前进行限定，如果不满足这个条件，则不参与分组
+- having在分组之后进行限定，如果不满足这个条件，则不会被查询出来
+- where后面不可以跟聚合函数，having后面可以进行聚合函数的判断。
+
+```sql
+--按照sex分组，分别查询男女同学，math课的平均分（如果分数低于70，那么不加入分组），以及人数，人数要大于2个人
+SELECT sex , AVG(math),COUNT(id) FROM student WHERE math>70 GROUP BY sex HAVING COUNT(id)>2;
+
+这个count(id)太傻逼了，可以考虑换个写法，比如起个别名
+两个方式都可以
+SELECT sex , AVG(math),COUNT(id) 人数 FROM student WHERE math>70 GROUP BY sex HAVING 人数>2;
+SELECT sex , AVG(math),COUNT(id) AS 人数 FROM student WHERE math>70 GROUP BY sex HAVING 人数>2;
+
+```
+
+
 
 ### 分页查询
 
@@ -475,7 +527,4 @@ SELECT COUNT(english) FROM student;
 # 范式
 
 # 数据库的备份和还原
-
-```cpp
-```
 
