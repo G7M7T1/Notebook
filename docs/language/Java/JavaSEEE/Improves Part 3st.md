@@ -466,7 +466,7 @@ public class RunoobTest {
 
 更多的情况下使用 ArrayList 访问列表中的随机元素更加高效，但以下几种情况 LinkedList 提供了更高效的方法。
 
-### 在列表开头添加元素：
+### 在列表开头添加元素
 
 ```java
 // 引入 LinkedList 类
