@@ -33,9 +33,11 @@ Java 可运行于多个平台，如 Windows, Mac OS 及其他多种 UNIX 版本�
 
 ### 读前须知
 
-本文由AsheOne18编写，如果错误请告诉我一声
-模范参照W3C，结合自己学习记录进行搭配修改
-
+- 本文由AsheOne18编写，如果错误请告诉我一声
+- 模范参照W3C，结合自己学习记录进行搭配修改
+- Java目录下的JavaWeb中包含的Html / Css / JavaScript / MySQL 不是全面的markdown
+- 是用Java技术来解决相关web互联网领域的技术栈，简单概括为：基本概念和用法
+- 如果想阅读更详细的MarkDown，请跳转到 “数据管理”
 ------
 
 ### Java可选阅读
@@ -51,9 +53,9 @@ Java 可运行于多个平台，如 Windows, Mac OS 及其他多种 UNIX 版本�
 
 ### JavaSE
 
-- 
--  
-- 
+- Java基础
+- Java面向对象  
+- Java高级
 
 ### JavaWeb
 
