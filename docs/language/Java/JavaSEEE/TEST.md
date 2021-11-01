@@ -54,7 +54,7 @@ sidebar_label: 'Improves Part 2st'
 
 ## 集合框架体系
 
-![](/imges/2.png
+![](https://github.com/G7M7T1/Notebook/blob/main/docs/language/Java/JavaSEEE/imges/1.png)
 
 Java 集合框架提供了一套性能优良，使用方便的接口和类，java集合框架位于java.util包中， 所以当使用集合框架的时候需要进行导包。
 
