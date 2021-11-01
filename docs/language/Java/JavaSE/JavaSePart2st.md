@@ -15,7 +15,6 @@ sidebar_label: 'JavaSE Part 2st'
 - 特殊转移字符序列
 - 自动类型转换
 - 强制类型转换
-- 
 
 ------
 
