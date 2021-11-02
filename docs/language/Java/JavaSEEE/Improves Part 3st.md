@@ -18,7 +18,7 @@ ArrayList 类是一个可以动态修改的数组，与普通数组的区别就�
 
 ArrayList 继承了 AbstractList ，并实现了 List 接口。
 
-![](https://github.com/G7M7T1/Notebook/blob/main/docs/language/Java/JavaSEEE/imges/6.png)
+![](6.png)
 
 ArrayList 类位于 java.util 包中，使用前需要引入它，语法格式如下：
 
@@ -394,11 +394,11 @@ Java ArrayList 常用方法列表如下：
 
 一个单向链表包含两个值: 当前节点的值和一个指向下一个节点的链接。
 
-![](https://github.com/G7M7T1/Notebook/blob/main/docs/language/Java/JavaSEEE/imges/3.png)
+![](3.png)
 
 一个双向链表有三个整数值: 数值、向后的节点链接、向前的节点链接。
 
-![](https://github.com/G7M7T1/Notebook/blob/main/docs/language/Java/JavaSEEE/imges/4.png)
+![](4.png)
 
 Java LinkedList（链表） 类似于 ArrayList，是一种常用的数据容器。
 
@@ -426,7 +426,7 @@ LinkedList 实现了 Cloneable 接口，可实现克隆。
 
 LinkedList 实现了 java.io.Serializable 接口，即可支持序列化，能通过序列化去传输。
 
-![](https://github.com/G7M7T1/Notebook/blob/main/docs/language/Java/JavaSEEE/imges/5.png)
+![](5.png)
 
 LinkedList 类位于 java.util 包中，使用前需要引入它，语法格式如下：
 
