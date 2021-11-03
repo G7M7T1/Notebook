@@ -59,7 +59,7 @@ Java 可运行于多个平台，如 Windows, Mac OS 及其他多种 UNIX 版本�
 
 ### JavaWeb
 
-- Java-MySQL
+- JavaWeb-MySQL
 
 ### Maven
 
