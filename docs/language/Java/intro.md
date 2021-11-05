@@ -38,6 +38,7 @@ Java 可运行于多个平台，如 Windows, Mac OS 及其他多种 UNIX 版本�
 - Java目录下的JavaWeb中包含的Html / Css / JavaScript / MySQL 不是全面的markdown
 - 是用Java技术来解决相关web互联网领域的技术栈，简单概括为：基本概念和用法
 - 如果想阅读更详细的MarkDown，请跳转到 “数据管理”
+- 文中有举出方法，具体的方法使用请配合官方[JAVA SE API](https://www.oracle.com/cn/java/technologies/java-se-api-doc.html)。 文档阅读
 ------
 
 ### Java可选阅读
