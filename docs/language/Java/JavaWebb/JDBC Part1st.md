@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Java JDBC 1st'
+sidebar_label: 'JDBC-Part-1st'
 ---
 
 # 本文包含以下元素
