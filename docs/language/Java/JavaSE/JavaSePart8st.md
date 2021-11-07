@@ -457,7 +457,14 @@ Java方法是语句的集合，它们在一起执行一个功能。
 ### 方法的命名规则
 
 - 1.方法的名字的第一个单词应以小写字母作为开头，后面的单词则用大写字母开头写，不使用连接符。例如：**addPerson**。
-- 2.下划线可能出现在 JUnit 测试方法名称中用以分隔名称的逻辑组件。一个典型的模式是：**test<MethodUnderTest>_<state>**，例如 **testPop_emptyStack**。
+
+- 2.下划线可能出现在 JUnit 测试方法名称中用以分隔名称的逻辑组件。一个典型的模式是：
+
+- ```JAVA
+  test<MethodUnderTest>_<state>
+  ```
+
+- 例如 **testPop_emptyStack**。
 
 ------
 
