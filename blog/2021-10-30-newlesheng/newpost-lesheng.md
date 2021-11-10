@@ -17,5 +17,4 @@ tags: [Post, 1esheng]
 ![image](https://user-images.githubusercontent.com/91392822/139607329-b5b6f979-9e59-4060-82a0-c3fa02544c20.png)
 ![image](https://user-images.githubusercontent.com/91392822/139607345-e1ce3de4-298c-4f7a-92e8-33c52d965899.png)
 
-老徐是我老婆
-每天老徐都抱着我睡觉
+老徐是lesheng的父亲
