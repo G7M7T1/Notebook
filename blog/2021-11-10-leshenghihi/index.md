@@ -5,4 +5,4 @@ authors: [1esheng]
 tags: [Post, 1esheng]
 ---
 
-你好，我是乐生。我是黄色视频制作者，经常拍一些黄色视频发到网上，链接：https://www.youtube.com/watch?v=dQw4w9WgXcQ
+守护世界上最好的乐生：https://www.youtube.com/watch?v=dQw4w9WgXcQ
