@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Notebook",
-  tagline: "G7M7T1 / Xpakeb13 / AsheOne",
+  tagline: "G7M7T1 / Xpakeb13 / AsheOne / Gam5K",
   url: "https://your-docusaurus-test-site.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -70,6 +70,11 @@ const config = {
             label: "AsheOne18",
             position: "right",
           },
+          {
+            href: "https://github.com/Gam5K",
+            label: "Gam5K",
+            position: "right",
+          },
         ],
       },
       footer: {
@@ -98,6 +103,10 @@ const config = {
               {
                 href: "https://github.com/AsheOne18",
                 label: "AsheOne18",
+              },
+              {
+                href: "https://github.com/Gam5K",
+                label: "Gam5K",
               },
             ],
           },

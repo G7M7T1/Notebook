@@ -18,6 +18,11 @@ const FeatureList = [
     Svg: require("../../static/img/3.svg").default,
     description: <>Developer / Back-end Engineer</>,
   },
+  {
+    title: "Gam5K",
+    Svg: require("../../static/img/4.svg").default,
+    description: <>Developer / Script Developer</>,
+  },
 ];
 
 function Feature({ Svg, title, description }) {
